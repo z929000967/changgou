@@ -1,0 +1,6 @@
+com\changgou\goods\controller\BrandController.class
+com\changgou\GoodsApplication.class
+com\changgou\goods\dao\BrandMapper.class
+com\changgou\goods\service\BrandService.class
+com\changgou\goods\controller\BaseExceptionHandler.class
+com\changgou\goods\service\impl\BrandServiceImpl.class
