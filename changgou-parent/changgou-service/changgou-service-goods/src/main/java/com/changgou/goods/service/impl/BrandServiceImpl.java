@@ -1,5 +1,4 @@
 package com.changgou.goods.service.impl;
-
 import com.changgou.goods.dao.BrandMapper;
 import com.changgou.goods.pojo.Brand;
 import com.changgou.goods.service.BrandService;
@@ -9,17 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
-
 import java.util.List;
 
-/**
- * 描述
- *
- * @author 三国的包子
- * @version 1.0
- * @package com.changgou.goods.service.impl *
- * @since 1.0
- */
 @Service
 public class BrandServiceImpl implements BrandService {
 
@@ -27,101 +17,136 @@ public class BrandServiceImpl implements BrandService {
     private BrandMapper brandMapper;
 
 
+    /**
+     * Brand条件+分页查询
+     * @param brand 查询条件
+     * @param page 页码
+     * @param size 页大小
+     * @return 分页结果
+     */
     @Override
-    public List<Brand> findAll() {
-        List<Brand> brands = brandMapper.selectAll();
-
-        return brands;
-    }
-
-    @Override
-    public Brand findById(Integer id) {
-        // select * from tb_brand where id = ?
-        return brandMapper.selectByPrimaryKey(id);
-    }
-
-    @Override
-    public void add(Brand brand) {
-        //insert into tb_brand(id,name,....) values(#{})
-        brandMapper.insertSelective(brand);
-    }
-
-    @Override
-    public void update(Brand brand) {
-        //update tb_brand  set name=? where id =?
-        brandMapper.updateByPrimaryKeySelective(brand);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        //delete from tb_brand wehre id =?
-        brandMapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public List<Brand> findList(Brand brand) {
-        //select * from tb_brand where name like "%?%" and letter = '?'
-        //1.创建条件对象( 设置字节码对象 标识 查询哪一个表)
-        //CTR + ALT + M
-        Example example = createExample(brand);
-
-        //3.根据条件来执行查询
-        List<Brand> brands = brandMapper.selectByExample(example);
-        //4.返回结果
-        return brands;
-    }
-
-    @Override
-    public PageInfo<Brand> findPage(Integer page, Integer size) {
-
-        //1.开始分页 紧跟着的[第一个查询 才会被分页]
-        PageHelper.startPage(page, size);
-        //2.执行查询
-        List<Brand> brands = brandMapper.selectAll();
-        List<Brand> brands1111 = brandMapper.selectAll();
-
-        System.out.println(brands.size() + "::::::::brands1111:" + brands1111.size());
-
-        //3.获取到结果集
-
-
-        //4.封装pageinfo 返回
-
-        return new PageInfo<Brand>(brands);
-    }
-
-    @Override
-    public PageInfo<Brand> findPage(Integer page, Integer size, Brand brand) {
-        //1.开始分页
+    public PageInfo<Brand> findPage(Brand brand, int page, int size){
+        //分页
         PageHelper.startPage(page,size);
-        //2.构建查询的条件
+        //搜索条件构建
         Example example = createExample(brand);
-        //3.执行查询
-        List<Brand> brands = brandMapper.selectByExample(example);
-        //4.获取结果
-        //5.封装pageinfo 返回
-        return new PageInfo<Brand>(brands);
+        //执行搜索
+        return new PageInfo<Brand>(brandMapper.selectByExample(example));
     }
 
-    private Example createExample(Brand brand) {
-        Example example = new Example(Brand.class);//select * from tb_brand
-        Example.Criteria criteria = example.createCriteria();
-        //2.判断 拼接条件
-        if (brand != null) {
-            if (!StringUtils.isEmpty(brand.getName())) {// where name like ?
-                //第一个参数:指定要条件比较的 属性的名称(POJO的属性名)
-                //第二个参数:指定要比较的值
-                criteria.andLike("name", "%" + brand.getName() + "%");
-            }
+    /**
+     * Brand分页查询
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public PageInfo<Brand> findPage(int page, int size){
+        //静态分页
+        PageHelper.startPage(page,size);
+        //分页查询
+        return new PageInfo<Brand>(brandMapper.selectAll());
+    }
 
-            if (!StringUtils.isEmpty(brand.getLetter())) {// where letter = ?
-                //第一个参数:指定要条件比较的 属性的名称(POJO的属性名)
-                //第二个参数:指定要比较的值
-                criteria.andEqualTo("letter", brand.getLetter());
+    /**
+     * Brand条件查询
+     * @param brand
+     * @return
+     */
+    @Override
+    public List<Brand> findList(Brand brand){
+        //构建查询条件
+        Example example = createExample(brand);
+        //根据构建的条件查询数据
+        return brandMapper.selectByExample(example);
+    }
+
+
+    /**
+     * Brand构建查询对象
+     * @param brand
+     * @return
+     */
+    public Example createExample(Brand brand){
+        Example example=new Example(Brand.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(brand!=null){
+            // 品牌id
+            if(!StringUtils.isEmpty(brand.getId())){
+                    criteria.andEqualTo("id",brand.getId());
+            }
+            // 品牌名称
+            if(!StringUtils.isEmpty(brand.getName())){
+                    criteria.andLike("name","%"+brand.getName()+"%");
+            }
+            // 品牌图片地址
+            if(!StringUtils.isEmpty(brand.getImage())){
+                    criteria.andEqualTo("image",brand.getImage());
+            }
+            // 品牌的首字母
+            if(!StringUtils.isEmpty(brand.getLetter())){
+                    criteria.andEqualTo("letter",brand.getLetter());
+            }
+            // 排序
+            if(!StringUtils.isEmpty(brand.getSeq())){
+                    criteria.andEqualTo("seq",brand.getSeq());
             }
         }
         return example;
     }
 
+    /**
+     * 删除
+     * @param id
+     */
+    @Override
+    public void delete(Integer id){
+        brandMapper.deleteByPrimaryKey(id);
+    }
 
+    /**
+     * 修改Brand
+     * @param brand
+     */
+    @Override
+    public void update(Brand brand){
+        brandMapper.updateByPrimaryKey(brand);
+    }
+
+    /**
+     * 增加Brand
+     * @param brand
+     */
+    @Override
+    public void add(Brand brand){
+        brandMapper.insert(brand);
+    }
+
+    /**
+     * 根据ID查询Brand
+     * @param id
+     * @return
+     */
+    @Override
+    public Brand findById(Integer id){
+        return  brandMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 查询Brand全部数据
+     * @return
+     */
+    @Override
+    public List<Brand> findAll() {
+        return brandMapper.selectAll();
+    }
+
+    @Override
+    public List<Brand> findByCategory(Integer id) {
+        //两种方案:
+            //1. 自己写sql语句直接执行  推荐
+            //2. 调用通用的mapper的方法 一个个表查询
+
+        return brandMapper.findByCategory(id);
+    }
 }

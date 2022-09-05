@@ -1,13 +1,10 @@
 package com.changgou.goods.service;
-
 import com.changgou.goods.pojo.Template;
 import com.github.pagehelper.PageInfo;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-
 public interface TemplateService {
+
     /***
      * Template多条件分页查询
      * @param template
@@ -55,7 +52,7 @@ public interface TemplateService {
      * @param id
      * @return
      */
-    Template findById(Integer id);
+     Template findById(Integer id);
 
     /***
      * 查询所有Template

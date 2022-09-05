@@ -1,11 +1,10 @@
 package com.changgou.goods.service;
-
 import com.changgou.goods.pojo.Spec;
 import com.github.pagehelper.PageInfo;
-
 import java.util.List;
 
 public interface SpecService {
+
     /***
      * Spec多条件分页查询
      * @param spec
@@ -53,11 +52,19 @@ public interface SpecService {
      * @param id
      * @return
      */
-    Spec findById(Integer id);
+     Spec findById(Integer id);
 
     /***
      * 查询所有Spec
      * @return
      */
     List<Spec> findAll();
+
+
+    /**
+     * 根据分类的ID 查询规格的列表数据
+     * @param id 三级分类的ID
+     * @return
+     */
+    List<Spec> findByCategoryId(Integer id);
 }

@@ -1,5 +1,4 @@
 package com.changgou.goods.service.impl;
-
 import com.changgou.goods.dao.AlbumMapper;
 import com.changgou.goods.pojo.Album;
 import com.changgou.goods.service.AlbumService;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
-
 import java.util.List;
 
 @Service
@@ -75,19 +73,19 @@ public class AlbumServiceImpl implements AlbumService {
         if(album!=null){
             // 编号
             if(!StringUtils.isEmpty(album.getId())){
-                criteria.andEqualTo("id",album.getId());
+                    criteria.andEqualTo("id",album.getId());
             }
             // 相册名称
             if(!StringUtils.isEmpty(album.getTitle())){
-                criteria.andLike("title","%"+album.getTitle()+"%");
+                    criteria.andLike("title","%"+album.getTitle()+"%");
             }
             // 相册封面
             if(!StringUtils.isEmpty(album.getImage())){
-                criteria.andEqualTo("image",album.getImage());
+                    criteria.andEqualTo("image",album.getImage());
             }
             // 图片列表
             if(!StringUtils.isEmpty(album.getImageItems())){
-                criteria.andEqualTo("imageItems",album.getImageItems());
+                    criteria.andEqualTo("imageItems",album.getImageItems());
             }
         }
         return example;
