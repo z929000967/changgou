@@ -29,7 +29,7 @@ public class SkuController {
      * 调用搜索实现
      */
     @GetMapping
-    public Map search(@RequestBody(required = false) Map<String,String> searchMap) throws Exception{
+    public Map search(@RequestParam(required = false) Map<String,String> searchMap) throws Exception{
         return  skuService.search(searchMap);
     }
 }

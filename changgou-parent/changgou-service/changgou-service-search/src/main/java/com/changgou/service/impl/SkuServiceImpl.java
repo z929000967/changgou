@@ -7,10 +7,15 @@ import com.changgou.goods.pojo.Sku;
 import com.changgou.search.pojo.SkuInfo;
 import com.changgou.service.SkuService;
 import entity.Result;
+import org.apache.lucene.queryparser.classic.QueryParserBase;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -78,14 +83,22 @@ public class SkuServiceImpl implements SkuService {
         //集合搜索
         Map<String, Object> resultMap = searchList(builder);
 
+        //当用户选择了分类,将分类作为搜索条件，则不需要对分类进行分组搜索,因为分组搜索的数据是用于显示搜索条件的
+        //分类->searchMap->category
+        if(searchMap == null || StringUtils.isEmpty((searchMap.get("category")))){
+            //分类分组查询
+            List<String> categoryList = SearchCategoryList(builder);
+            resultMap.put("categoryList",categoryList);
+        }
 
-        //分类分组查询
-        List<String> categoryList = SearchCategoryList(builder);
-        resultMap.put("categoryList",categoryList);
+        //当用户选择了分类,将分类作为搜索条件，则不需要对分类进行分组搜索,因为分组搜索的数据是用于显示搜索条件的
+        //品牌->searchMap->brand
+        if(searchMap == null || StringUtils.isEmpty((searchMap.get("brand")))){
+            //品牌分组查询
+            List<String> brandList = SearchBrandList(builder);
+            resultMap.put("brandList",brandList);
+        }
 
-        //品牌分组查询
-        List<String> brandList = SearchBrandList(builder);
-        resultMap.put("brandList",brandList);
 
         //规格查询
         Map<String,Set<String>> specList = SearchSpecList(builder);
@@ -98,17 +111,87 @@ public class SkuServiceImpl implements SkuService {
         //NativeSearchQueryBuilder：搜索条件构建对象，用于i封装各种搜索条件
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
 
+        //BoolQueryBuilder must,must_not,should
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         if (searchMap!=null && searchMap.size()>0){
             //关键词搜索
             String keywords = searchMap.get("keywords");
             //如果关键词不为空，则搜索关键词数据
-            if(StringUtils.isEmpty(keywords)){
-                builder.withQuery(QueryBuilders.queryStringQuery(keywords).field("name"));
+            if(!StringUtils.isEmpty(keywords)){
+                //builder.withQuery(QueryBuilders.queryStringQuery(keywords).field("name"));
+                boolQueryBuilder.must(QueryBuilders.queryStringQuery(keywords).field("name"));
             }
 
+            //输入了分类
+            if(!StringUtils.isEmpty(searchMap.get("category"))){
+                boolQueryBuilder.must(QueryBuilders.termQuery("categoryName",searchMap.get("category")));
+            }
+
+            //输入了品牌
+            if(!StringUtils.isEmpty(searchMap.get("brand"))){
+                boolQueryBuilder.must(QueryBuilders.termQuery("brandName",searchMap.get("brand")));
+            }
+
+            //规格过滤实现
+            for (Map.Entry<String,String> entry : searchMap.entrySet()) {
+                String key = entry.getKey();
+                //如果key以spec_开始，则表示规格筛选查询
+                if(key.startsWith("spec_")){
+                    //规格条件的值
+                    String value = entry.getValue();
+                    boolQueryBuilder.must(QueryBuilders.termQuery("specMap."+key.substring(5)+".keyword",value));
+                }
+                
+            }
+            //价格区间过滤
+            String price = searchMap.get("price");
+            if(!StringUtils.isEmpty(price)){
+                price = price.replace("元","").replace("以上","");
+                String[] prices = price.split("-");
+                if (price!=null && price.length()>0){
+                    if(prices.length >= 1){
+                        boolQueryBuilder.must(QueryBuilders.rangeQuery("price").gt(prices[0]));
+                    }
+                    if(prices.length == 2){
+                        boolQueryBuilder.must(QueryBuilders.rangeQuery("price").lte(prices[1]));
+                    }
+                }
+            }
+
+            //排序实现
+            String sortField = searchMap.get("sortField");
+            String sortRule = searchMap.get("sortRule");
+            if(!StringUtils.isEmpty(sortField)&& !StringUtils.isEmpty(sortRule)){
+                builder.withSort(new FieldSortBuilder(sortField).order(SortOrder.valueOf(sortRule)));
+            }
+        }
+
+        //分页，用户如果不传分页参数，则默认第一页
+        Integer size = 3;    //查询默认的数据条数
+        Integer pageNum = coverterPage(searchMap); //默认第一页
+        builder.withPageable(PageRequest.of(pageNum-1,size));
+
+        //将boolQueryBuilder填充给NativeSearchQueryBuilder
+        builder.withQuery(boolQueryBuilder);
+        return builder;
+    }
+
+    /**
+     * 接收前端传入的分页参数
+     * @param searchMap
+     * @return
+     */
+    public  Integer coverterPage(Map<String,String> searchMap){
+        if (searchMap != null){
+            String pageNum = searchMap.get("pageNum");
+            try {
+                return Integer.parseInt(pageNum);
+            }
+            catch (NumberFormatException e){
+            }
 
         }
-        return builder;
+        return 1;
     }
 
     private Map<String, Object> searchList(NativeSearchQueryBuilder builder) {
