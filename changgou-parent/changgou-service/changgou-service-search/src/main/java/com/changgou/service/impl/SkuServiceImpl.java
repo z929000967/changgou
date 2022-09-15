@@ -8,16 +8,24 @@ import com.changgou.search.pojo.SkuInfo;
 import com.changgou.service.SkuService;
 import entity.Result;
 import org.apache.lucene.queryparser.classic.QueryParserBase;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -195,14 +203,66 @@ public class SkuServiceImpl implements SkuService {
     }
 
     private Map<String, Object> searchList(NativeSearchQueryBuilder builder) {
+
+        //高亮配置
+        HighlightBuilder.Field field = new HighlightBuilder.Field("name");//指定高定域
+        //前缀
+        field.preTags("<em style=\"color:red;\"");
+        //后缀
+        field.postTags("</em>");
+        //碎片长度
+        field.fragmentSize(100);
+        //添加高亮
+        builder.withHighlightFields(field);
+
+
+
+
         /**
          * 执行搜索，响应结果
          * 1)搜索条件封装对象
          * 2）搜索的结果集（集合数据）需要转换的类型
          * 3)AggregatedPage<SkuInfo>：搜索结果集的封装
          */
-        AggregatedPage<SkuInfo> page = elasticsearchTemplate.queryForPage(builder.build(),SkuInfo.class);
+        //AggregatedPage<SkuInfo> page = elasticsearchTemplate.queryForPage(builder.build(),SkuInfo.class);
+        AggregatedPage<SkuInfo> page = elasticsearchTemplate
+                .queryForPage(
+                        builder.build(),    //搜索条件封装
+                        SkuInfo.class,
+                        new SearchResultMapper() {
+                            @Override
+                            public <T> AggregatedPage<T> mapResults(SearchResponse searchResponse, Class<T> aClass, Pageable pageable) {
+                                //存储转换后的高亮数据
+                                List<T> list = new ArrayList<T>();
+                                //执行查询，获取所有数据->结果集[非高亮数据|高亮数据]
+                                for (SearchHit hit : searchResponse.getHits()) {
+                                    //分析结果集数据，获取非高亮数据
+                                    SkuInfo skuInfo = JSON.parseObject(hit.getSourceAsString(),SkuInfo.class);
+                                    //分析结果集数据，获取高亮数据->只有某个域的高亮数据
+                                    HighlightField highlightField = hit.getHighlightFields().get("name");
 
+                                    if (highlightField != null && highlightField.getFragments() != null){
+                                        //高亮数据读取出来
+                                        Text[] framents = highlightField.getFragments();
+                                        StringBuffer buffer = new StringBuffer();
+                                        for (Text frament : framents) {
+                                            buffer.append(frament.toString());
+                                        }
+                                        //非高亮数据中指定的域替换成高亮数据
+                                        skuInfo.setName(buffer.toString());
+                                    }
+                                    //将高亮数据添加导集合list中
+                                    list.add((T) skuInfo);
+                                }
+                                //将数据返回
+                                /**
+                                 * 1)搜索的集合的数据:(携带高亮)List<T> content
+                                 * 2)分页对象信息
+                                 * 3)搜索记录的总条数
+                                 */
+                                return new AggregatedPageImpl<T>(list,pageable,searchResponse.getHits().getTotalHits());
+                            }
+                        });
 
         //分析数据-总记录数
         long totaElements = page.getTotalElements();
