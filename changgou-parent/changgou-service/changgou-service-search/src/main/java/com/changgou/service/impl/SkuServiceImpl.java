@@ -239,7 +239,7 @@ public class SkuServiceImpl implements SkuService {
         }
 
         //分页，用户如果不传分页参数，则默认第一页
-        Integer size = 3;    //查询默认的数据条数
+        Integer size = 20;    //查询默认的数据条数
         Integer pageNum = coverterPage(searchMap); //默认第一页
         builder.withPageable(PageRequest.of(pageNum-1,size));
 
