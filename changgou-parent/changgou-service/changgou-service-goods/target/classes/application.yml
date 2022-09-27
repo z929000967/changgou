@@ -23,4 +23,4 @@ feign:
 #  configuration:
 #    map-underscore-to-camel-case: true
 #  mapper-locations: classpath:mapper/*Mapper.xml
-#  type-aliases-package: com.changgou.goods.pojo
+#  type-aliases-package: com.changgou.goods.pojos

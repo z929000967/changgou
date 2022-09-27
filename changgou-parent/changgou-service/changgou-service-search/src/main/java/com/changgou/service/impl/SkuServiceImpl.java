@@ -26,6 +26,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -271,7 +272,7 @@ public class SkuServiceImpl implements SkuService {
         //高亮配置
         HighlightBuilder.Field field = new HighlightBuilder.Field("name");//指定高定域
         //前缀
-        field.preTags("<em style=\"color:red;\"");
+        field.preTags("<em style=\"color:red\">");
         //后缀
         field.postTags("</em>");
         //碎片长度
@@ -328,6 +329,9 @@ public class SkuServiceImpl implements SkuService {
                             }
                         });
 
+
+
+
         //分析数据-总记录数
         long totaElements = page.getTotalElements();
 
@@ -343,6 +347,16 @@ public class SkuServiceImpl implements SkuService {
         resulMap.put("rows",contents);
         resulMap.put("total",totaElements);
         resulMap.put("totaPages",totaPages);
+
+        //获取搜索封装信息
+        NativeSearchQuery query = builder.build();
+        Pageable pageable = query.getPageable();
+        int pageSize = pageable.getPageSize();
+        int pageNumber = pageable.getPageNumber();
+
+        //分页数据
+        resulMap.put("pageSize",pageSize);
+        resulMap.put("pageNumber",pageNumber);
         return resulMap;
     }
 
