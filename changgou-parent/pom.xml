@@ -27,6 +27,7 @@
         <module>changgou-eureka</module>
         <module>changgou-common</module>
         <module>changgou-common-db</module>
+        <module>changgou-user-oauth</module>
     </modules>
 
     <!--跳过测试-->
