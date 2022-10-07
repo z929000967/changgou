@@ -10,8 +10,8 @@ import java.util.Collection;
 public class UserJwt extends User {
     private String id;    //用户ID
     private String name;  //用户名字
-
-    private String comny;//设置公司
+    private String company; //设置公司
+    private String address;//公司地址
 
     public UserJwt(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
@@ -31,5 +31,21 @@ public class UserJwt extends User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
