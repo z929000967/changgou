@@ -5,30 +5,32 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 @EnableEurekaClient
 public class GatewayWebApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(GatewayWebApplication.class,args);
     }
 
-    /**
-     * 创建用户唯一标识，使用IP作为用户的唯一标识，来根据IP进行限流
-     */
-    @Bean(name = "ipKeyResolver")
-    public KeyResolver userKeyResolver(){
+    //创建一个ipKeyResolver 指定用户的IP
+    @Bean(name="ipKeyResolver")
+    public KeyResolver keyResolver(){
         return new KeyResolver() {
             @Override
             public Mono<String> resolve(ServerWebExchange exchange) {
-//                return Mono.just("需要使用的用户身份识别唯一标识【IP】");
-                String ip = exchange.getRequest().getRemoteAddress().getHostString();
-                System.out.println("用户请求的ip"+ip);
-                return Mono.just(ip);
+                //1.获取请求request对象
+                ServerHttpRequest request = exchange.getRequest();
+                //2.从request中获取ip地址
+                String hostString = request.getRemoteAddress().getHostString();//Ip地址
+
+                //3.返回
+                return Mono.just(hostString);
             }
         };
     }
+
 }

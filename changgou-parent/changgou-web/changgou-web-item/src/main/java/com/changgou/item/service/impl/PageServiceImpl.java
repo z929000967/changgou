@@ -20,14 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 描述
- *
- * @author www.itheima.com
- * @version 1.0
- * @package com.changgou.item.service.impl *
- * @since 1.0
- */
+
 @Service
 public class PageServiceImpl implements PageService {
     @Autowired

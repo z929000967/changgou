@@ -42,7 +42,7 @@ public class CreateJwtTest {
         Map<String,Object> payload = new HashMap<String, Object>();
         payload.put("name","tomcat");
         payload.put("address","sz");
-        payload.put("role","admin.user");
+        payload.put("authorities",new String[]{"admin","oauth"});
 
         Jwt jwt = JwtHelper.encode(JSON.toJSONString(payload), new RsaSigner(privateKey));
 
@@ -57,7 +57,7 @@ public class CreateJwtTest {
      */
     @Test
     public void testParseToken(){
-        String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjoic3oiLCJyb2xlIjoiYWRtaW4udXNlciIsIm5hbWUiOiJ0b21jYXQifQ.O4c5sinIOvntDFb8r_u684yTKczjOPPlQG13u8WtMxaAw2eRvLJNWIo5_Tyg7QHOJLmP0g-CGI9tYmCWZYDKHU9exhT01gDLLFqE7OFvgjABybwHTkoPhV12EmlNqEpyFSjBrkZUCtIbKNfIsNAuufM8aFxStr7zVjV6JZV2PqqMKCoSP0ivggd4Wg9UrXVcaETwEF5XtfkvoQrxF7cRHFHqgc9nSkndBlxDW2-S3SrwxSCK9ptb5cJ6BbGyJTuT3GausyBAxnfMYnJdLZA0fkew7vGZE73T4y369MyGhihG6lcMSeT0A4JVbdf-M0mhtNBbWxLlfAGZP7ovl218jA";
+        String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjoic3oiLCJuYW1lIjoidG9tY2F0IiwiYXV0aG9yaXRpZXMiOlsiYWRtaW4iLCJvYXV0aCJdfQ.WValUf2Sa37vjsRdk-pAD397PyuFDSa8gXnpWADUyN9bzWjv_Puu85U_-qQ5Y8VbcTEXi-NfmCc_PyeKG2uwJpx0PQSGV-HPOy8-at5L6_d379pl8ihfu_X9YSGdNpMH_FDMQtl6cedqHoQn9Yls28uTGipl6exbyIywb29xNtzPHOp329S33efbIYQPT4fvRemoTViESTsaaTut4NgyHQFbm1jI3JrtBW5u3Ha0n-rHCuxy9zPqR2ci1nRKsYa2kn8io4DRpfUXfZgAa30qYR9Q8QMsoM1UOk7xqkRGOy2M3U_pZtF-gm1u0DNjZ4zGVJ5Nym8wYF0-5ogtBrAm-g";
         String pubilckey = "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwHlC09OB81OyQNOFJehYFOOH2BgGIQZERmNmOHEHA1xUb+2SoqqfgP2ec9+y9LAhD5W4nXy72c9ZPrNX+cHpxk3h6XQ+if8j6QO8z/+EDzY96N1PXq8fkW1mhjkhmCjgfs/fq6c8HUewxgJOVLE1wrOXB7ok1SPXbsHM6eRmSY5yEMYDIjVYI0EfkWUOfcXwUXNJGMLhYQlHyyRDz4fQ0pHsK9SHVSvAF0fxTZwdetikWF8HW7Dtl5BY/tCliWRSpcDnQ3sVRygFBKZK/uZp5RTaFzTih84ZKy317IcIP1T+1k1bCKHJ6i3vkRPBJTyHtsJ5GvQcdnSw6QjQ4KayvQIDAQAB-----END PUBLIC KEY-----";
         Jwt jwt = JwtHelper.decodeAndVerify(token,
                 new RsaVerifier(pubilckey)

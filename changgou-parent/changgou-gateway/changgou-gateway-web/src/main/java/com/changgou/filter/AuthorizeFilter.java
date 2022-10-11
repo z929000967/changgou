@@ -20,71 +20,67 @@ import reactor.core.publisher.Mono;
  */
 @Component
 public class AuthorizeFilter implements GlobalFilter, Ordered {
-
-    //令牌的名字
-    private static final String AUTHORIZE_TOKEN = "Authorizetion";
-
-    /**
-     * 全局拦截
-     * @param exchange
-     * @param chain
-     * @return
-     */
+    private static final String AUTHORIZE_TOKEN = "Authorization";
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+
+        //1.获取请求对象
         ServerHttpRequest request = exchange.getRequest();
+        //2.获取响应对象
         ServerHttpResponse response = exchange.getResponse();
 
-        //获取用户令牌信息
-        //1}头文件中
-        String token = request.getHeaders().getFirst(AUTHORIZE_TOKEN);
-        //boolean ture:令牌在头文件中 false：令牌不在头文件中->将令牌封装到头文件中，再传递给其他微服务
-        boolean hasToken = true;
-
-        //2}参数获取令牌
-        if(StringUtils.isEmpty(token)){
-            token = request.getQueryParams().getFirst(AUTHORIZE_TOKEN);
-            hasToken = false;
+        //3.判断 是否为登录的URL 如果是 放行
+        if(request.getURI().getPath().startsWith("/api/user/login")){
+            return chain.filter(exchange);
         }
+        //4.判断 是否为登录的URL 如果不是      权限校验
 
-        //3}Cookie中
+
+        //4.1 从头header中获取令牌数据
+        String token = request.getHeaders().getFirst(AUTHORIZE_TOKEN);
+
         if(StringUtils.isEmpty(token)){
-            HttpCookie httpCookie = request.getCookies().getFirst(AUTHORIZE_TOKEN);
-            if (httpCookie!=null){
-                token = httpCookie.getValue();
+            //4.2 从cookie中中获取令牌数据
+            HttpCookie first = request.getCookies().getFirst(AUTHORIZE_TOKEN);
+            if(first!=null){
+                token=first.getValue();//就是令牌的数据
             }
         }
 
-        //如果没有令牌，则拦截
         if(StringUtils.isEmpty(token)){
-            //设置没有权限的状态码 401
+            //4.3 从请求参数中获取令牌数据
+            token= request.getQueryParams().getFirst(AUTHORIZE_TOKEN);
+        }
+
+        if(StringUtils.isEmpty(token)){
+            //4.4. 如果没有数据 结束.
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            //响应空数据
             return response.setComplete();
         }
 
-        //如果有令牌则校验令牌是否有效
+
+        //5 解析令牌数据 ( 判断解析是否正确,正确 就放行 ,否则 结束)
+
         try {
-            JwtUtil.parseJWT(token);
-        }
-        //无效则拦截
-        catch (Exception e) {
-            //设置没有权限的状态码 401
+            //Claims claims = JwtUtil.parseJWT(token);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //解析失败
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            //响应空数据
             return response.setComplete();
         }
-        //将令牌封装到头文件中
-        request.mutate().header(AUTHORIZE_TOKEN,token);
+
+        //添加头信息 传递给 各个微服务()
+        request.mutate().header(AUTHORIZE_TOKEN,"Bearer "+ token);
+
 
 
         return chain.filter(exchange);
     }
 
-    /**
-     * 排序
-     * @return
-     */
     @Override
     public int getOrder() {
         return 0;
