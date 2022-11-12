@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf模板引擎案例</title>
+</head>
+<body>
+<p>hello</p>
+
+<form th:action="@{/pay/alipay}" method="post" enctype="multipart/form-data">
+    <button type="submit">确认支付</button>
+</form>
+
+<p></p>
+</body>
+</html>

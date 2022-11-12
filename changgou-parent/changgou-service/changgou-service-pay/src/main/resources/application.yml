@@ -1,0 +1,64 @@
+server:
+  port: 18091
+spring:
+  application:
+    name: pay
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    host: 192.168.211.132
+    port: 5672
+    username: linxiaohei
+    password: z8335493
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+  instance:
+    prefer-ip-address: true
+feign:
+  hystrix:
+    enabled: true
+#hystrix 配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          #如果enabled设置为false，则请求超时交给ribbon控制
+          enabled: true
+        isolation:
+          strategy: SEMAPHORE
+
+#微信支付信息配置
+#alibaba:
+#  # appid
+#  appid: 2021000120615549
+#  # 私有秘钥
+#  privateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCMDHD4T+FnbS0tm8aj4vVEgUOoJQzyr0Chz7Po7MiGibyWdYzNFVwPht3UWNj53ZH+1152iDWZ4c/twc4WJvg0ClPQVSBBi9NZEYG+eyoBRnSXDghsTUC2ax9TvTUYy9Tee44I7Ez9RHQYDxkvyb1jPaULwDCCaxhOLLJ36kfK8bkm/fs+EzZrr0QXNG8D2NwUAqNDSoC73UBaOqzcjJhlTbR7gVYy88WRoaECzlptg4s1F/hIUxDxJuH3ieAPixVVs92pK02cXbDGKAuG8UXXJKoajnETheD1POglERRfQ6jPNIYIYB5eBKCTC1/fmcUs10RtFW0jUF5wXpdVO81ZAgMBAAECggEAcQKJFpa++MqsriUJwa2e5Uy537EmJZ8ttGT6dHa9yXLT70Wj/MnDo/PchUG8tMQKz23TGCsJtcb2FpFRT6bamoPK5k4K3VmLjlAGNkMEvkqwQkRcn6gnFAyVFumTMxMoDu/8yU6FQco/NDraxCky3iYcTMMlYdgxoMOIsCMpE6WQ6mJ18OQJ0xHVe5ig3jHlBJY9ZVeri817LHqxnCQMkLWCfYP/J1uNazDXuzW51WOzwU8cBDNx6UsfH6fvwL+E9dBPzpDESwZzPEnnTyFRmOF+UEGIG4XP47/FP0R44lxqhN98/UDUI8A/9ev8GDT0icg1+v2UsdlQMngO61G+0QKBgQDJdVP09LR0CUlK16sE3V+ClGw8b4mrSodj3qsI4WAiPvCYEVMaPtNkv2mMW7exueFs/qtnPS3hbpILg4l2ML0yytKIHyAXwehYjA+px4LTMG3S36XT1FtRJty5vLNZQZiHxdYgTFEA0lQMqEMtByp2nTRI9CdME6XK1Y+z20o+6wKBgQCx9u3aH1eyr2g8hzV5JJ8DxAovAVkow8xKiIGIuTb93MYVGagaPtrmRylUyHudArloBRyXJXFodBe/9YazIxn+PqQyZoxjKgIaisah83ASInzfFUR4oD5kdsJY+PYyDMcL4sSvDyglLAO+bZSMIMBCspVfBangKKKR1/6SwSN7ywKBgAtI1i4XcvA5APD/SaYZHFt9It7zxHtizliqxVvW/AKPEf0Co2wJ7t9q1We2T4DWD6mCTmmXBLXm8qlQcee77S0mLUrQq4SJKRGkrs/szAg2Y0B3pJtL/t151s1Uo5sxUHDyhP8EJ1lrbqfS2QhxqVBBmAcqHfVl+Fh3Q/hoJS2HAoGATnKT7Heud9S8dRoA51LOSaGr/4Zvn/mXXy+HMha69/LO2lRB9rfIVIP/4yCw5MhjpEfEj5fwwuOR6Is5glOxzJIeXR05Oyk0XjDYWGFwAH51Xv0H/shcWHrFNuUf2XYqc8HVg3mB78jUKagyOAbj2ULRd16OwIIJD5MP4+8BTjsCgYBr5Y2kG1YoHkrh6Twz8C4eaVJeJs9LaRb6++401ZPI/6HRl1qruRnNsfdeTlGtqxBqUm5+NZ+2MfvWeHkeIQFugkcCVXz95UBxhXiq6/2pNOUl0rCi+hAujb49YHQs9Djq+f6JEB1HP14KCIkQu1IEGg9PxKVil5IdCrTx9PdVtQ==
+#  # 编码格式
+#  charset: UTF-8
+#  # 支付宝公有密钥
+#  publvicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApwpKsFs44+68d8vnJptkgOC0zaYu1QtwiDgWHw46mp8bfZYYnci2qy1Owepa5NbuGV20pVOBaUmUrjSjZ08L9TGPMySQOTkIVLU4f1+GamP3rvy0zZTknwhZgiNVfgBqFQawJG4hKIWJNcM32TfVWK66yqaU/QpromSHCROdxPZP8miqEKvh6XKSVuRqlV/yw54KaYrDbKKcRPIIjUEY1si4F7Z1U7nyUTlytVHGsHoFj6S6156XixeFu1AMjhlHj778B6uuQA4kbeFQ32VqYAaHgJHRRsnKiT87Q6rAdnfRQcwKxvmnQ0qE6Aja7WDmkzN5QXRDUahGtPYdJrGWoQIDAQAB
+#  # 支付宝服务地址 这是沙箱接口路径,正式路径为https://openapi.alipay.com/gateway.do
+#  gatewayUrl: https://openapi.alipaydev.com/gateway.do
+#  # 签名方式
+#  singType: RSA2
+#  # 回调地址, 注意这里服务器回调一定要公网ip
+#  returnUrl: http://localhost:8080/callback/returnUrl
+#  notyfyUrl: http://120.78.9.67:5003/callback/notyfyUrl
+
+mq:
+  pay:
+    exchange:
+      order: exchange.order
+    queue:
+      order: queue.order
+    routing:
+      key: queue.order
+
+ext:
+  a: abc
+  b: def
+
+

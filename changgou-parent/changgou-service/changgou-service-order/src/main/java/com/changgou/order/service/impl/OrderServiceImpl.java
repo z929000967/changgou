@@ -1,16 +1,28 @@
 package com.changgou.order.service.impl;
 
+import com.changgou.goods.feign.SkuFeign;
+import com.changgou.order.dao.OrderItemMapper;
 import com.changgou.order.dao.OrderMapper;
 import com.changgou.order.pojo.Order;
+import com.changgou.order.pojo.OrderItem;
 import com.changgou.order.service.OrderService;
+import com.changgou.user.feign.UserFeign;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import entity.IdWorker;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -18,7 +30,23 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private IdWorker idWorker;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private OrderItemMapper orderItemMapper;
+
+    @Autowired
+    private SkuFeign skuFeign;
+
+    @Autowired
+    private UserFeign userFeign;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     /**
      * Order条件+分页查询
      * @param order 查询条件
@@ -209,7 +237,83 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public void add(Order order){
-        orderMapper.insert(order);
+        /**
+         * 1.价格校验
+         * 2.当前购物车和订单明细捆绑了，没有拆开
+         */
+        //创建订单id
+        order.setId(String.valueOf(idWorker.nextId()));
+        //循环购物车获取订单明细
+        List<OrderItem> orderItems = new ArrayList<OrderItem>();//redisTemplate.boundHashOps("Cart_" + order.getUsername()).values();
+
+        //获取勾选的商品ID，需要下单的商品，将要下单的商品ID信息从购物车中移除
+        for (Long skuId : order.getSkuIds()) {
+            orderItems.add((OrderItem) redisTemplate.boundHashOps("Cart_" + order.getUsername()).get(skuId));
+            redisTemplate.boundHashOps("Cart_" + order.getUsername()).delete(skuId);
+        }
+
+        //封装Map<Long,Integer> 封装递减数据
+        Map<String,Integer> decrmap = new HashMap<String, Integer>();
+
+        //统计计算
+        int totalMoney = 0;
+        int totalPayMoney=0;
+        int num = 0;
+        for (OrderItem orderItem : orderItems) {
+            //总金额
+            totalMoney+=orderItem.getMoney();
+
+            //实际支付金额
+            totalPayMoney+=orderItem.getPayMoney();
+            //总数量
+            num+=orderItem.getNum();
+
+        }
+        order.setTotalNum(num);
+        order.setTotalMoney(totalMoney);
+        order.setPayMoney(totalPayMoney);
+        order.setPreMoney(totalMoney-totalPayMoney);
+
+        //其他数据完善
+        order.setCreateTime(new Date());
+        order.setUpdateTime(order.getCreateTime());
+        order.setBuyerRate("0");        //0:未评价，1：已评价
+        order.setSourceType("1");       //来源，1：WEB
+        order.setOrderStatus("0");      //0:未完成,1:已完成，2：已退货
+        order.setPayStatus("0");        //0:未支付，1：已支付，2：支付失败
+        order.setConsignStatus("0");    //0:未发货，1：已发货，2：已收货
+        order.setId(String.valueOf(idWorker.nextId()));
+        orderMapper.insertSelective(order);
+
+        //添加订单明细
+        for (OrderItem orderItem : orderItems) {
+            orderItem.setId(String.valueOf(idWorker.nextId()));
+            orderItem.setIsReturn("0");
+            orderItem.setOrderId(order.getId());
+            decrmap.put(orderItem.getSkuId().toString(),orderItem.getNum());
+            orderItemMapper.insertSelective(orderItem);
+        }
+
+        //库存递减
+        skuFeign.decrCont(decrmap);
+
+        //添加用户积分活跃度
+        userFeign.addPoints(totalPayMoney/100);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("创建订单的时间"+simpleDateFormat.format(new Date()));
+
+        //添加订单
+        rabbitTemplate.convertAndSend("normalExchange","CC", order.getId(), new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                //设置延时读取
+                message.getMessageProperties().setExpiration("10000");
+                return message;
+            }
+        });
+        // rabbitTemplate.convertAndSend("normalExchange","CC","订单1111");
+
     }
 
     /**
@@ -229,5 +333,47 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAll() {
         return orderMapper.selectAll();
+    }
+
+    /**
+     * 修改订单状态
+     * 1.修改支付时间
+     * 2.修改支付状态
+     * @parm outtradeno  订单号
+     * @parm paytime    支付时间
+     * @parm transactionid  交易流水号
+     */
+    @Override
+    public void updateStatus(String outtradeno, String paytime, String transactionid) throws Exception {
+        //查询订单
+        Order order = orderMapper.selectByPrimaryKey(outtradeno);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date parseTimeInfo = simpleDateFormat.parse(paytime);
+        //修改订单信息
+        order.setPayTime(parseTimeInfo);
+        order.setPayStatus("1");
+        order.setTransactionId(transactionid);
+
+        //修改到数据库中
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    /**
+     * 删除[修改订单状态]订单回滚库存
+     */
+    @Override
+    public void deleteOrder(String outtradeno) {
+        //查询订单
+        Order order = orderMapper.selectByPrimaryKey(outtradeno);
+
+        //修改状态
+        order.setUpdateTime(new Date());
+        order.setPayStatus("2");  //支付失败
+
+        //修改到数据库中
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        //回滚库存->调用goods微服务
     }
 }

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/alipaytest/alipaytest.iml" filepath="$PROJECT_DIR$/alipaytest/alipaytest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/changgou.iml" filepath="$PROJECT_DIR$/.idea/changgou.iml" />
       <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-common/changgou-common.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-common/changgou-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-common-db/changgou-common-db.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-common-db/changgou-common-db.iml" />
@@ -19,6 +20,7 @@
       <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-service-api/changgou-service-goods-api/changgou-service-goods-api.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-service-api/changgou-service-goods-api/changgou-service-goods-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-order/changgou-service-order.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-order/changgou-service-order.iml" />
       <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-service-api/changgou-service-order-api/changgou-service-order-api.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-service-api/changgou-service-order-api/changgou-service-order-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-pay/changgou-service-pay.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-pay/changgou-service-pay.iml" />
       <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-search/changgou-service-search.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-search/changgou-service-search.iml" />
       <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-service-api/changgou-service-search-api/changgou-service-search-api.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-service-api/changgou-service-search-api/changgou-service-search-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-user/changgou-service-user.iml" filepath="$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-user/changgou-service-user.iml" />

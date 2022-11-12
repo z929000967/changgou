@@ -1,5 +1,6 @@
 package com.changgou.user.service;
 
+import com.changgou.user.pojo.Address;
 import com.changgou.user.pojo.Areas;
 import com.github.pagehelper.PageInfo;
 
@@ -61,4 +62,6 @@ public interface AreasService {
      * @return
      */
     List<Areas> findAll();
+
+
 }

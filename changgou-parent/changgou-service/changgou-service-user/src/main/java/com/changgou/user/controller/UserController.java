@@ -1,13 +1,13 @@
 package com.changgou.user.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.changgou.user.config.TokenDecode;
 import com.changgou.user.pojo.User;
 import com.changgou.user.service.UserService;
 import com.github.pagehelper.PageInfo;
-import entity.BCrypt;
-import entity.JwtUtil;
-import entity.Result;
-import entity.StatusCode;
+
+
+import entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenDecode tokenDecode;
 
     /***
      * User分页条件搜索实现
@@ -162,11 +165,19 @@ public class UserController {
             //失败
             return new Result<User>(false, StatusCode.LOGINERROR, "用户名或密码错误");
         }
+    }
 
+    /**
+     * 添加用户积分
+     */
+    @GetMapping(value = "/points/add")
+    public Result addPoints(Integer points){
+        //获取用户名
+        Map<String, String> userMap = tokenDecode.getUserInfo();
+        String username = userMap.get("username");
 
-
-
-
-
+        //添加积分
+        userService.addUserPoints(username,points);
+        return new Result(true,StatusCode.OK,"添加积分成功！");
     }
 }

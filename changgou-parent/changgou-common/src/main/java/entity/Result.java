@@ -5,14 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
-/**
- * 描述
- *
- * @author 三国的包子
- * @version 1.0
- * @package entity *
- * @since 1.0
- */
 @ApiModel(description = "Result",value = "Result")
 public class Result<T> implements Serializable {
 

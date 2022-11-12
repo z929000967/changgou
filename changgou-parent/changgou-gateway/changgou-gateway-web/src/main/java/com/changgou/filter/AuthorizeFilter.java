@@ -21,6 +21,9 @@ import reactor.core.publisher.Mono;
 @Component
 public class AuthorizeFilter implements GlobalFilter, Ordered {
     private static final String AUTHORIZE_TOKEN = "Authorization";
+
+    //用户登录地址
+    private static final String USER_LOGIN_URL="http://localhost:9001/oauth/login";
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
@@ -28,6 +31,12 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         //2.获取响应对象
         ServerHttpResponse response = exchange.getResponse();
+
+        //用户如果是登录或者一些不需要做权限认证的请求，直接放行
+        String url  = request.getURI().toString();
+        if (URLFilter.hasAuthorize(url)){
+            return chain.filter(exchange);
+        }
 
         //3.判断 是否为登录的URL 如果是 放行
         if(request.getURI().getPath().startsWith("/api/user/login")){
@@ -55,7 +64,10 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         if(StringUtils.isEmpty(token)){
             //4.4. 如果没有数据 结束.
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
+            // return response.setComplete();
+            response.getHeaders().set("Location",USER_LOGIN_URL+"?From="+request.getURI().toString());
             return response.setComplete();
+            // return needAuthorization(USER_LOGIN_URL+"?From="+request.getURI().toString(),exchange);
         }
 
 
@@ -85,4 +97,12 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
     public int getOrder() {
         return 0;
     }
+
+    public Mono<Void> needAuthorization(String url,ServerWebExchange exchange){
+        ServerHttpResponse response = exchange.getResponse();
+        response.setStatusCode(HttpStatus.SEE_OTHER);
+        response.getHeaders().set("Location",url);
+        return exchange.getResponse().setComplete();
+    }
+
 }

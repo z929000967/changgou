@@ -5,10 +5,13 @@ import com.changgou.order.service.OrderService;
 import com.github.pagehelper.PageInfo;
 import entity.Result;
 import entity.StatusCode;
+import com.changgou.order.config.TokenDecode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/order")
@@ -17,6 +20,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private TokenDecode tokenDecode;
 
     /***
      * Order分页条件搜索实现
@@ -91,6 +97,11 @@ public class OrderController {
      */
     @PostMapping
     public Result add(@RequestBody   Order order){
+        //获取用户名
+        Map<String, String> userMap = tokenDecode.getUserInfo();
+        String username = userMap.get("username");
+        order.setUsername(username);
+
         //调用OrderService实现添加Order
         orderService.add(order);
         return new Result(true,StatusCode.OK,"添加成功");

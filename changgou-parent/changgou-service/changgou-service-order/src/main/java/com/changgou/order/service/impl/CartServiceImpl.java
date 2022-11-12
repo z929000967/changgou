@@ -4,6 +4,7 @@ import com.changgou.goods.feign.SkuFeign;
 import com.changgou.goods.feign.SpuFeign;
 import com.changgou.goods.pojo.Sku;
 import com.changgou.goods.pojo.Spu;
+import com.changgou.order.pojo.Order;
 import com.changgou.order.pojo.OrderItem;
 import com.changgou.order.service.CartService;
 import entity.Result;
@@ -78,4 +79,7 @@ public class CartServiceImpl implements CartService {
         List<OrderItem> orderItemList = redisTemplate.boundHashOps("Cart_" + username).values();
         return orderItemList;
     }
+
+
+
 }

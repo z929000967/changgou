@@ -7,25 +7,27 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
-/**
- * 描述
- *
- * @author www.itheima.com
- * @version 1.0
- * @package com.changgou.goods.feign *
- * @since 1.0
- */
 @FeignClient(value="goods")
 @RequestMapping("/sku")
 public interface SkuFeign {
+
+    /**
+     * 商品信息递减
+     * Mao<key,value key:要递减的商品id
+     *               value：要递减的数量
+     */
+    @GetMapping(value = "/decr/count")
+    Result decrCont(@RequestParam Map<String,Integer> decrmap);
+
     /**
      * 查询符合条件的状态的SKU的列表
      * @param status
      * @return
      */
     @GetMapping("/status/{status}")
-    public Result<List<Sku>> findByStatus(@PathVariable(name = "status") String status);
+    Result<List<Sku>> findByStatus(@PathVariable(name = "status") String status);
 
 
     /**
@@ -34,10 +36,11 @@ public interface SkuFeign {
      * @return
      */
     @PostMapping(value = "/search" )
-    public Result<List<Sku>> findList(@RequestBody(required = false) Sku sku);
+    Result<List<Sku>> findList(@RequestBody(required = false) Sku sku);
 
     @GetMapping("/{id}")
-    public Result<Sku> findById(@PathVariable(name="id") Long id);
+    Result<Sku> findById(@PathVariable(name="id") Long id);
+
 
 
 }

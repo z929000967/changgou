@@ -61,4 +61,12 @@ public interface UserService {
      * @return
      */
     List<User> findAll();
+
+    /***
+     * 添加用户积分
+     * @param username
+     * @param points
+     * @return
+     */
+    int addUserPoints(String username,Integer points);
 }

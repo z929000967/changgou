@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -13,11 +14,13 @@
         <module name="changgou-service-file-six" />
         <module name="changgou-service-content" />
         <module name="changgou-service-user" />
+        <module name="GG" />
         <module name="changgou-service-order-api" />
         <module name="changgou-gateway-web" />
         <module name="changgou-search-web" />
         <module name="changgou-common" />
         <module name="changgou-web-searchhtml" />
+        <module name="alipaytest" />
         <module name="springboot-thymeleaf" />
         <module name="changgou-web-item" />
         <module name="changgou-service-search-api" />
@@ -26,6 +29,7 @@
         <module name="changgou-service-order" />
         <module name="changgou-common-db" />
         <module name="changgou-service-content-api" />
+        <module name="changgou-service-pay" />
         <module name="changgou-service-file" />
         <module name="changgou-service-goods-api" />
         <module name="changgou-eureka" />
@@ -35,6 +39,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="alipaytest" target="1.8" />
       <module name="changgou-common" target="1.8" />
       <module name="changgou-common-db" target="1.8" />
       <module name="changgou-eureka" target="1.8" />
@@ -55,6 +60,7 @@
       <module name="changgou-service-goods-api" target="1.8" />
       <module name="changgou-service-order" target="1.8" />
       <module name="changgou-service-order-api" target="1.8" />
+      <module name="changgou-service-pay" target="1.8" />
       <module name="changgou-service-search" target="1.8" />
       <module name="changgou-service-search-api" target="1.8" />
       <module name="changgou-service-user" target="1.8" />
@@ -65,11 +71,14 @@
       <module name="changgou-web-item-api" target="1.8" />
       <module name="changgou-web-search" target="1.8" />
       <module name="changgou-web-searchhtml" target="1.8" />
+      <module name="GG" target="1.8" />
       <module name="springboot-thymeleaf" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="GG" options="-parameters" />
+      <module name="alipaytest" options="-parameters" />
       <module name="changgou-common" options="-parameters" />
       <module name="changgou-common-db" options="-parameters" />
       <module name="changgou-eureka" options="-parameters" />
@@ -89,6 +98,7 @@
       <module name="changgou-service-goods-api" options="-parameters" />
       <module name="changgou-service-order" options="-parameters" />
       <module name="changgou-service-order-api" options="-parameters" />
+      <module name="changgou-service-pay" options="-parameters" />
       <module name="changgou-service-search" options="-parameters" />
       <module name="changgou-service-search-api" options="-parameters" />
       <module name="changgou-service-user" options="-parameters" />

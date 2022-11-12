@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SkuServiceImpl implements SkuService {
@@ -195,5 +196,28 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public List<Sku> findAll() {
         return skuMapper.selectAll();
+    }
+
+    /**
+     * 商品库存递减
+     * @param decrmap
+     */
+    @Override
+    public void decrCount(Map<String, Integer> decrmap) {
+        for (Map.Entry<String,Integer> entry : decrmap.entrySet()){
+            //商品ID
+            Long id = Long.valueOf(entry.getKey());
+            //递减数据
+            Object obj = entry.getValue();
+            Integer num = Integer.valueOf(obj.toString());
+
+            //库存数量>=递减数量
+            //采用行级锁控制超卖 update tb_sku set num=num-#{num} where id=#{id} and num>=#{num}
+            //数据库中每条记录都拥有行级锁，此时只允许一个事务修改该记录，只有等该事务结束后，其他事务才能操作该记录
+            int count = skuMapper.decrCount(id,num);
+            if (count<=0){
+                throw new RuntimeException("库存不足请回滚");
+            }
+        }
     }
 }

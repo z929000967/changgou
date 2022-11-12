@@ -162,4 +162,17 @@ public class AddressServiceImpl implements AddressService {
     public List<Address> findAll() {
         return addressMapper.selectAll();
     }
+
+    /**
+     * 根据用户登录名查询用户收件地址列表
+     * @param username
+     * @return
+     */
+    @Override
+    public List<Address> list(String username) {
+        //select * from tb_address where username=?
+        Address address = new Address();
+        address.setUsername(username);
+        return addressMapper.select(address);
+    }
 }
