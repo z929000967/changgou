@@ -11,7 +11,7 @@ public class TestContriller {
 
     @GetMapping(value = "/hello")
     public String hello(Model model){
-        model.addAttribute("message","tttsgh");
-        return "search";
+        model.addAttribute("message","你好小超");
+        return "demo1";
     }
 }

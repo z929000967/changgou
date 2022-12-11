@@ -4,11 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-/****
- * @Author:admin
- * @Description:UndoLog构建
- * @Date 2019/6/14 19:13
- *****/
+
 @Table(name="undo_log")
 public class UndoLog implements Serializable{
 

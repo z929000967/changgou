@@ -1,5 +1,6 @@
 package com.test.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -19,6 +20,9 @@ import org.springframework.web.client.AsyncRestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -53,12 +57,13 @@ public class PayController {
     @ResponseBody
     @RequestMapping("/pay/alipay")
     public String alipay(HttpSession session, Model model,
-                         @RequestParam("dona_money") float dona_money,
-                         @RequestParam("dona_id") int dona_id,
+
+                         @RequestParam("subject") String subject,
                          @RequestParam("OrderNum") String OrderNum
                          ) throws AlipayApiException {
         //把dona_id项目id 放在session中
-        session.setAttribute("dona_id",dona_id);
+        session.setAttribute("subject",subject);
+        float dona_money =20f;
 
         // //生成订单号（支付宝的要求？）
         // String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -67,7 +72,7 @@ public class PayController {
         // String OrderNum = time+user;
 
         //调用封装好的方法（给支付宝接口发送请求）
-        return sendRequestToAlipay(OrderNum,dona_money,"商品名称:"+OrderNum);
+        return sendRequestToAlipay(OrderNum,dona_money,subject);
     }
     /*
 参数1：订单号
@@ -85,7 +90,10 @@ public class PayController {
         alipayRequest.setNotifyUrl(NOTIFY_URL);
 
         //商品描述（可空）
-        String body="";
+        // String[] body={"ex","gg"};
+        String json = "{\"name\":\"John Doe\",\"age\":34}";
+        String body  = URLEncoder.encode(json, StandardCharsets.UTF_8);
+
         alipayRequest.setBizContent("{\"out_trade_no\":\"" + outTradeNo + "\","
                 + "\"total_amount\":\"" + totalAmount + "\","
                 + "\"subject\":\"" + subject + "\","
@@ -174,6 +182,10 @@ public class PayController {
         }
 
         System.out.println(params);//查看参数都有哪些
+        // System.out.println(new String(request.getParameter("body").getBytes("ISO-8859-1"), "UTF-8"));
+        String ex = params.get("body");
+        String jsonDecoded = URLDecoder.decode(ex, StandardCharsets.UTF_8);
+        System.out.println("===================================="+jsonDecoded);
         //验证签名（支付宝公钥）
         boolean signVerified = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, SIGN_TYPE); // 调用SDK验证签名
         if(!signVerified){

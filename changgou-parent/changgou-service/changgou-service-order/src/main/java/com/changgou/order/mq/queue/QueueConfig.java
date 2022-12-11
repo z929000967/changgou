@@ -24,9 +24,9 @@ public class QueueConfig {
         Map<String,Object> map=new HashMap();
         // map.put("x-message-ttl", 5000);//message在该队列queue的存活时间最大为10秒
         map.put("x-dead-letter-exchange", "deadExchange");//x-dead-letter-exchange参数
-//是设置该队列的死信交换器（DLX）
+        //是设置该队列的死信交换器（DLX）
         map.put("x-dead-letter-routing-key","DD");//x-dead-letter-routing-key
-//参数是给这个DLX指定路由键
+        //参数是给这个DLX指定路由键
         return new Queue("normalQueue",true,false,false,map);
     }
 

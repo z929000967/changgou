@@ -8,14 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 描述
- *
- * @author www.itheima.com
- * @version 1.0
- * @package com.changgou.item.controller *
- * @since 1.0
- */
 
 @RestController
 @RequestMapping("/page")

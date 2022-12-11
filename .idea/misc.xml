@@ -14,6 +14,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/changgou-parent/changgou-service-search-api/pom.xml" />
+        <option value="$PROJECT_DIR$/changgou-parent/changgou-service-seckill/pom.xml" />
         <option value="$PROJECT_DIR$/changgou-parent/changgou-service/GG/pom.xml" />
         <option value="$PROJECT_DIR$/changgou-parent/changgou-service/changgou-servce/pom.xml" />
         <option value="$PROJECT_DIR$/changgou-parent/changgou-service/changgou-service-file/pom.xml" />

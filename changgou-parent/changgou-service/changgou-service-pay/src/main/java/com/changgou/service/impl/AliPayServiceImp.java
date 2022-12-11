@@ -4,8 +4,10 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeCloseRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.changgou.service.AliPayService;
 import org.springframework.stereotype.Service;
@@ -73,7 +75,7 @@ public class AliPayServiceImp implements AliPayService {
  */
     //支付宝官方提供的接口
     @Override
-    public String sendRequestToAlipay(String outTradeNo, Float totalAmount, String subject) throws AlipayApiException {
+    public String sendRequestToAlipay(String outTradeNo, Float totalAmount, String subject,String body) throws AlipayApiException {
 
         //设置请求参数
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
@@ -81,8 +83,9 @@ public class AliPayServiceImp implements AliPayService {
         alipayRequest.setNotifyUrl(NOTIFY_URL);
 
         //商品描述（可空）
-        String body="";
+        // String body="这是啥阿";
         alipayRequest.setBizContent("{\"out_trade_no\":\"" + outTradeNo + "\","
+                // + "\"store_name\":\"" + store_name + "\","
                 + "\"total_amount\":\"" + totalAmount + "\","
                 + "\"subject\":\"" + subject + "\","
                 + "\"body\":\"" + body + "\","
@@ -171,8 +174,7 @@ public class AliPayServiceImp implements AliPayService {
         }
 
         System.out.println(params);//查看参数都有哪些
-        // return params;
-        // 验证签名（支付宝公钥）
+        //验证签名（支付宝公钥）
         boolean signVerified = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, SIGN_TYPE); // 调用SDK验证签名
         if(!signVerified){
             String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"), "UTF-8");
@@ -225,9 +227,28 @@ public class AliPayServiceImp implements AliPayService {
         return false;
     }
 
+    /**
+     * 查询支付状态
+     * @param out_trade_no
+     * @return
+     * @throws AlipayApiException
+     */
     @Override
     public  AlipayTradeQueryResponse  tradeQuery(String out_trade_no) throws AlipayApiException{
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+        request.setBizContent("{\"out_trade_no\":\""+out_trade_no+"\"}");
+
+        return alipayClient.execute(request);
+    }
+
+    /**
+     * 关闭交易订单
+     * @param out_trade_no
+     * @return
+     * @throws AlipayApiException
+     */
+    public AlipayTradeCloseResponse closRequest(String out_trade_no) throws AlipayApiException{
+        AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
         request.setBizContent("{\"out_trade_no\":\""+out_trade_no+"\"}");
 
         return alipayClient.execute(request);

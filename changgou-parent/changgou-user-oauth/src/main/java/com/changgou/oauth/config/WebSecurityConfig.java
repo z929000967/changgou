@@ -34,7 +34,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/img/**",
                 "/js/**",
                 "/login.html",
-                "/login"
+                "/login",
+                "/oauth/login"
 
                 );
     }

@@ -3,11 +3,6 @@ package com.changgou.goods.pojo;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/****
- * @Author:admin
- * @Description:Template构建
- * @Date 2019/6/14 19:13
- *****/
 @Table(name="tb_template")
 public class Template implements Serializable{
 

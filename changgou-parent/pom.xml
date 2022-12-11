@@ -28,6 +28,7 @@
         <module>changgou-common</module>
         <module>changgou-common-db</module>
         <module>changgou-user-oauth</module>
+        <module>changgou-service-seckill</module>
     </modules>
 
     <!--跳过测试-->

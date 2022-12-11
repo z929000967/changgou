@@ -41,6 +41,7 @@ public interface SkuFeign {
     @GetMapping("/{id}")
     Result<Sku> findById(@PathVariable(name="id") Long id);
 
-
+    @GetMapping
+    public Result<List<Sku>> findAll();
 
 }

@@ -6,11 +6,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-/****
- * @Author:admin
- * @Description:StockBack构建
- * @Date 2019/6/14 19:13
- *****/
 @Table(name="tb_stock_back")
 public class StockBack implements Serializable{
 

@@ -3,11 +3,7 @@ package com.changgou.goods.pojo;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/****
- * @Author:admin
- * @Description:Spec构建
- * @Date 2019/6/14 19:13
- *****/
+
 @Table(name="tb_spec")
 public class Spec implements Serializable{
 
