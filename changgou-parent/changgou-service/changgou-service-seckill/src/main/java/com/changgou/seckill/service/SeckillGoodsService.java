@@ -71,4 +71,5 @@ public interface SeckillGoodsService {
      * 根据时间和秒杀商品ID查询秒杀商品数据
      */
     SeckillGoods one(String time,Long id);
+
 }

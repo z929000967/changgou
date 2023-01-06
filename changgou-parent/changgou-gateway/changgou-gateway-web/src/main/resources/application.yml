@@ -14,7 +14,7 @@ spring:
         - id: changgou_goods_route
           uri: lb://goods
           predicates:
-            - Path=/api/goods/**
+            - Path=/api/album/**,/api/brand/**,/api/categoryBrand/**,/api/category/**,/api/para/**,/api/pref/**,/api/sku/**,/api/spec/**,/api/spu/**,/api/stockBack/**,/api/template/**,/api/undoLog/**
           filters:
             - StripPrefix=1
             - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的facatory
@@ -38,7 +38,62 @@ spring:
             - Path=/api/cart/**,/api/categoryReport/**,/api/orderConfig/**,/api/order/**,/api/orderItem/**,/api/orderLog/**,/api/preferential/**,/api/returnCause/**,/api/returnOrder/**,/api/returnOrderItem/**
           filters:
             - StripPrefix=1
-
+          #订单微服务
+        - id: changgou_order_route
+          uri: lb://item
+          predicates:
+            - Path=/api/page/**,/api/itemweb/**
+          filters:
+            - StripPrefix=1
+          #首页页面渲染微服务
+        - id: changgou_order_route
+          uri: lb://index
+          predicates:
+            - Path=/api/test/**,/api/web/**,/api/js/**,/api/checkuser/**,/api/css/**,/api/data/**,/api/fonts/**,/api/img/**
+          filters:
+            - StripPrefix=1
+          #秒杀微服务
+        - id: changgou_order_route
+          uri: lb://seckill
+          predicates:
+            - Path=/api/seckillOrder/**,/api/seckillGoods/**
+          filters:
+            - StripPrefix=1
+          #广告微服务
+        - id: changgou_order_route
+          uri: lb://content
+          predicates:
+            - Path=/api/contentCategory/**,/api/content/**
+          filters:
+            - StripPrefix=1
+          #搜索微服务
+        - id: changgou_order_route
+          uri: lb://search
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - StripPrefix=1
+          #搜索页面渲染微服务
+        - id: changgou_order_route
+          uri: lb://search-web
+          predicates:
+            - Path=/api/searchweb/**
+          filters:
+            - StripPrefix=1
+          #秒杀页面渲染微服务
+        - id: changgou_order_route
+          uri: lb://seckill-web
+          predicates:
+            - Path=/api/seckillweb/**
+          filters:
+            - StripPrefix=1
+        #秒杀页面渲染微服务
+        - id: changgou_order_route
+          uri: lb://pay
+          predicates:
+            - Path=/api/pay/**,/api/callback**
+          filters:
+            - StripPrefix=1
   application:
     name: gateway-web
   #Redis配置

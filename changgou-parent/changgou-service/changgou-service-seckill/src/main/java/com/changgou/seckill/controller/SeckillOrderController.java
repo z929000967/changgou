@@ -6,10 +6,11 @@ import entity.Result;
 import entity.SeckillStatus;
 import entity.StatusCode;
 
+import entity.TokenDecode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
+import java.util.Map;
 
 
 @RestController
@@ -21,6 +22,9 @@ public class SeckillOrderController {
     @Autowired
     private SeckillOrderService seckillOrderService;
 
+    @Autowired
+    private TokenDecode tokenDecode;
+
     /***
      * 添加秒杀订单
      * @param time
@@ -29,7 +33,11 @@ public class SeckillOrderController {
      */
     @RequestMapping(value = "/add")
     public Result add(String time,Long id){
-        String username = "linxiaohei";
+
+        Map<String, String> userInfo = tokenDecode.getUserInfo();
+        String username = userInfo.get("username");
+
+        // String username = "linxiaohei";
 
         //2.调用service的方法创建订单
         boolean flag = seckillOrderService.add(time,id,username);
@@ -45,7 +53,9 @@ public class SeckillOrderController {
      */
     @GetMapping(value = "/query")
     public Result queryStatus(){
-        String username = "linxiaohei";
+        Map<String, String> userInfo = tokenDecode.getUserInfo();
+        String username = userInfo.get("username");
+        // String username = "linxiaohei";
         SeckillStatus seckillStatus = seckillOrderService.queryStatus(username);
 
         //查询成功

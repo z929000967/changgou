@@ -76,7 +76,7 @@ public class MultiThreadingCreateOrder {
             }
             //创建订单对象
             SeckillOrder seckillOrder = new SeckillOrder();
-            seckillOrder.setId(idWorker.nextId());
+            seckillOrder.setId(String.valueOf(idWorker.nextId()));
             seckillOrder.setSeckillId(id);
             seckillOrder.setMoney(seckillGoods.getCostPrice());
             seckillOrder.setUserId(username);
@@ -91,7 +91,13 @@ public class MultiThreadingCreateOrder {
              *          namespace->UserOrder
              *                      username:SeckillOrder
              */
-            redisTemplate.boundHashOps("SeckillOrder").put(username,seckillOrder);
+            redisTemplate.boundHashOps("SeckillOrderRedis").put(username,seckillOrder);
+
+            // SeckillOrder seckillOrder1 = (SeckillOrder) redisTemplate.boundHashOps("SeckillOrder").get("szitheima");
+            // if (seckillOrder1!=null){
+            //     System.out.println("????");
+            // }
+
 
             /***
              * 库存递减
@@ -139,6 +145,7 @@ public class MultiThreadingCreateOrder {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }
 

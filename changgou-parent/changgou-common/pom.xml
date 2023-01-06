@@ -43,11 +43,12 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
-<!--        &lt;!&ndash;oauth2.0认证包&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-oauth2</artifactId>-->
-<!--        </dependency>-->
+        <!--oauth依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!--鉴权-->
         <dependency>

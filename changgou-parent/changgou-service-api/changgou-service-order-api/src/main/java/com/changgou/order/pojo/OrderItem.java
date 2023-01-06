@@ -37,16 +37,16 @@ public class OrderItem implements Serializable{
 	private String name;//商品名称
 
     @Column(name = "price")
-	private float price;//单价
+	private Float price;//单价
 
     @Column(name = "num")
 	private Integer num;//数量
 
     @Column(name = "money")
-	private float money;//总金额
+	private Float money;//总金额
 
     @Column(name = "pay_money")
-	private float payMoney;//实付金额
+	private Float payMoney;//实付金额
 
     @Column(name = "image")
 	private String image;//图片地址

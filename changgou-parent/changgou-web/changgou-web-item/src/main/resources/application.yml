@@ -29,7 +29,5 @@ hystrix:
           thread:
             timeoutInMilliseconds: 50000   # feign连接超时时间
 
-  #rabbitmq:
-  #  host: 192.168.25.138
 # 生成静态页的位置
 pagepath: F:\Graduation Design Project\changgou\changgou-parent\changgou-web\changgou-web-item\src\main\resources\templates\items

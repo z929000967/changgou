@@ -144,8 +144,8 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<Brand> findByCategory(Integer id) {
         //两种方案:
-            //1. 自己写sql语句直接执行  推荐
-            //2. 调用通用的mapper的方法 一个个表查询
+        //1. 自己写sql语句直接执行  推荐
+        //2. 调用通用的mapper的方法 一个个表查询
 
         return brandMapper.findByCategory(id);
     }

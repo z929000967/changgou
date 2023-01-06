@@ -4,9 +4,10 @@ import com.changgou.item.service.PageService;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @RestController
@@ -25,4 +26,6 @@ public class PageController {
         pageService.createPageHtml(id);
         return new Result(true, StatusCode.OK,"ok");
     }
+
+
 }

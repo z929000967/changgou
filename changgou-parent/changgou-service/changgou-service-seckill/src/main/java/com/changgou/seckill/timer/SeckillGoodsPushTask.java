@@ -60,7 +60,7 @@ public class SeckillGoodsPushTask {
             criteria.andGreaterThan("stockCount",0);
             //时间菜单开始时间=<start_time && end_time<时间菜单的开始时间+2小时
             criteria.andGreaterThanOrEqualTo("startTime",dateMenu);
-            criteria.andLessThan("endTime",DateUtil.addDateHour(dateMenu,2).toString());
+            criteria.andLessThan("endTime",DateUtil.addDateHour(dateMenu,2));
             // System.out.println(DateUtil.addDateHour(dateMenu,2));
 
             //排除已经存入Redis中的SeckillGoods-> 1）求出当前命名空间下所有的商品ID（key） 2）每次查询排除掉之前存在的商品key的数据
@@ -78,6 +78,7 @@ public class SeckillGoodsPushTask {
                 System.out.println("商品ID："+seckillGood.getId()+"----存入到Redis---"+timespace);
                 //存入到Redis
                 redisTemplate.boundHashOps(timespace).put(seckillGood.getId(),seckillGood);
+                System.out.println("timespace="+timespace);
                 //给每个商品做个队列
                 redisTemplate.boundListOps("SeckillGoodsCountList_"+seckillGood.getId()).leftPushAll(putAllIds(seckillGood.getStockCount(),seckillGood.getId()));
             }

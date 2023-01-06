@@ -63,11 +63,11 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 
         if(StringUtils.isEmpty(token)){
             //4.4. 如果没有数据 结束.
-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+            // response.setStatusCode(HttpStatus.UNAUTHORIZED);
+            // // return response.setComplete();
+            // response.getHeaders().set("Location",USER_LOGIN_URL+"?From="+request.getURI().toString());
             // return response.setComplete();
-            response.getHeaders().set("Location",USER_LOGIN_URL+"?From="+request.getURI().toString());
-            return response.setComplete();
-            // return needAuthorization(USER_LOGIN_URL+"?From="+request.getURI().toString(),exchange);
+            return needAuthorization(USER_LOGIN_URL+"?FROM="+request.getURI().toString(),exchange);
         }
 
 

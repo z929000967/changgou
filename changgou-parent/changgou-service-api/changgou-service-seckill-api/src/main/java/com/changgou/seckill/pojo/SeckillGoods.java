@@ -1,4 +1,6 @@
 package com.changgou.seckill.pojo;
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.Long;
@@ -7,6 +9,7 @@ import java.lang.String;
 import java.lang.Integer;
 
 @Table(name="tb_seckill_goods")
+@Data
 public class SeckillGoods implements Serializable{
 
 	@Id
@@ -27,10 +30,10 @@ public class SeckillGoods implements Serializable{
 	private String smallPic;//商品图片
 
     @Column(name = "price")
-	private String price;//原价格
+	private Float price;//原价格
 
     @Column(name = "cost_price")
-	private String costPrice;//秒杀价格
+	private Float costPrice;//秒杀价格
 
     @Column(name = "create_time")
 	private Date createTime;//添加日期
@@ -56,143 +59,13 @@ public class SeckillGoods implements Serializable{
     @Column(name = "introduction")
 	private String introduction;//描述
 
+	@Column(name = "spec")
+	private String spec;//商品选项
 
+	@Column(name = "images")
+	private String images;//商品图片
 
-	//get方法
-	public Long getId() {
-		return id;
-	}
-
-	//set方法
-	public void setId(Long id) {
-		this.id = id;
-	}
-	//get方法
-	public Long getSupId() {
-		return supId;
-	}
-
-	//set方法
-	public void setSupId(Long supId) {
-		this.supId = supId;
-	}
-	//get方法
-	public Long getSkuId() {
-		return skuId;
-	}
-
-	//set方法
-	public void setSkuId(Long skuId) {
-		this.skuId = skuId;
-	}
-	//get方法
-	public String getName() {
-		return name;
-	}
-
-	//set方法
-	public void setName(String name) {
-		this.name = name;
-	}
-	//get方法
-	public String getSmallPic() {
-		return smallPic;
-	}
-
-	//set方法
-	public void setSmallPic(String smallPic) {
-		this.smallPic = smallPic;
-	}
-	//get方法
-	public String getPrice() {
-		return price;
-	}
-
-	//set方法
-	public void setPrice(String price) {
-		this.price = price;
-	}
-	//get方法
-	public String getCostPrice() {
-		return costPrice;
-	}
-
-	//set方法
-	public void setCostPrice(String costPrice) {
-		this.costPrice = costPrice;
-	}
-	//get方法
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	//set方法
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-	//get方法
-	public Date getCheckTime() {
-		return checkTime;
-	}
-
-	//set方法
-	public void setCheckTime(Date checkTime) {
-		this.checkTime = checkTime;
-	}
-	//get方法
-	public String getStatus() {
-		return status;
-	}
-
-	//set方法
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	//get方法
-	public Date getStartTime() {
-		return startTime;
-	}
-
-	//set方法
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-	//get方法
-	public Date getEndTime() {
-		return endTime;
-	}
-
-	//set方法
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-	//get方法
-	public Integer getNum() {
-		return num;
-	}
-
-	//set方法
-	public void setNum(Integer num) {
-		this.num = num;
-	}
-	//get方法
-	public Integer getStockCount() {
-		return stockCount;
-	}
-
-	//set方法
-	public void setStockCount(Integer stockCount) {
-		this.stockCount = stockCount;
-	}
-	//get方法
-	public String getIntroduction() {
-		return introduction;
-	}
-
-	//set方法
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
-
+	@Column(name = "parameter")
+	private String parameter;//商品相关参数
 
 }

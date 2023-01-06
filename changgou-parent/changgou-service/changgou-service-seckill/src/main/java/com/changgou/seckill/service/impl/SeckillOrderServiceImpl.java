@@ -234,7 +234,7 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
     @Override
     public void updatePayStatus(String endtime, String transaction_id, String username) {
         //查询订单
-        SeckillOrder seckillOrder = (SeckillOrder) redisTemplate.boundHashOps("SeckillOrder").get(username);
+        SeckillOrder seckillOrder = (SeckillOrder) redisTemplate.boundHashOps("SeckillOrderRedis").get(username);
 
         if (seckillOrder!=null){
             try {

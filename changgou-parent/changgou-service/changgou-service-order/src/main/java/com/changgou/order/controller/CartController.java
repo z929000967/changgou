@@ -1,10 +1,10 @@
 package com.changgou.order.controller;
 
-import com.changgou.order.config.TokenDecode;
 import com.changgou.order.pojo.OrderItem;
 import com.changgou.order.service.CartService;
 import entity.Result;
 import entity.StatusCode;
+import entity.TokenDecode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,5 +59,14 @@ public class CartController {
 
     }
 
+    //获取购物车列表
+    @RequestMapping("/check")
+    public Result<String> name() {
+        Map<String, String> userInfo = tokenDecode.getUserInfo();
+        String username = userInfo.get("username");
+        return new Result<String>(true, StatusCode.OK, "用户名查询成功", username);
+
+
+    }
 
 }

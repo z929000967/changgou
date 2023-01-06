@@ -30,7 +30,7 @@ public class QueueConfig {
         //是设置该队列的死信交换器（DLX）
         map.put("x-dead-letter-routing-key","seckillDD");//x-dead-letter-routing-key
         //参数是给这个DLX指定路由键
-        return new Queue("normalQueue",true,false,false,map);
+        return new Queue("seckillnormalQueue",true,false,false,map);
     }
 
     /**

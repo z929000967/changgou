@@ -23,7 +23,7 @@ public class Sku implements Serializable{
 	private String name;//SKU名称
 
     @Column(name = "price")
-	private float price;//价格（分）
+	private Float price;//价格（分）
 
     @Column(name = "num")
 	private Integer num;//库存数量

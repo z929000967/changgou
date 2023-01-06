@@ -7,6 +7,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.changgou.service.AliPayService;
+import entity.TokenDecode;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class PayController {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private TokenDecode tokenDecode;
 
     //必须加ResponseBody注解，否则spring会寻找thymeleaf页面
 
@@ -60,6 +64,8 @@ public class PayController {
                          @RequestParam("username") String username,
                          @RequestParam("OrderNum") String OrderNum
                          ) throws AlipayApiException {
+        // Map<String, String> userInfo = tokenDecode.getUserInfo();
+        // String username = userInfo.get("username");
         Map<String,String> subjectMap = new HashMap<String, String>();
         subjectMap.put("exchange",exchange);
         subjectMap.put("routingkey",routingkey);

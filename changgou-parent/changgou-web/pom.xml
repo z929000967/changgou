@@ -19,6 +19,8 @@
     <modules>
         <module>changgou-web-searchhtml</module>
         <module>changgou-web-item</module>
+        <module>changgou-web-indexhtml</module>
+        <module>changgou-web-seckillhtml</module>
     </modules>
     <dependencies>
         <!--web起步依赖-->

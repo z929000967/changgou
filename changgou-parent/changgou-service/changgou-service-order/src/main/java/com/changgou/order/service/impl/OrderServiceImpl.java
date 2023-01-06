@@ -256,8 +256,8 @@ public class OrderServiceImpl implements OrderService {
         Map<String,Integer> decrmap = new HashMap<String, Integer>();
 
         //统计计算
-        int totalMoney = 0;
-        int totalPayMoney=0;
+        float totalMoney = 0;
+        float totalPayMoney=0;
         int num = 0;
         for (OrderItem orderItem : orderItems) {
             //总金额
@@ -282,7 +282,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus("0");      //0:未完成,1:已完成，2：已退货
         order.setPayStatus("0");        //0:未支付，1：已支付，2：支付失败
         order.setConsignStatus("0");    //0:未发货，1：已发货，2：已收货
-        order.setId(String.valueOf(idWorker.nextId()));
+        // order.setId(String.valueOf(idWorker.nextId()));
         orderMapper.insertSelective(order);
 
         //添加订单明细
@@ -298,7 +298,7 @@ public class OrderServiceImpl implements OrderService {
         skuFeign.decrCont(decrmap);
 
         //添加用户积分活跃度
-        userFeign.addPoints(totalPayMoney/100);
+        userFeign.addPoints((int) (totalPayMoney/100));
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("创建订单的时间"+simpleDateFormat.format(new Date()));

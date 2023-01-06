@@ -76,9 +76,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         //其他的请求  必须有登录之后才能访问 (校验token合法才可以访问)
 
         //所有请求必须认证通过
+        // http.authorizeRequests()
+        //         .anyRequest()
+        //         .authenticated();    //其他地址需要认证授权
+        //所有请求必须认证通过
         http.authorizeRequests()
-                .anyRequest()
-                .authenticated();    //其他地址需要认证授权
+                //下边的路径放行
+                .antMatchers(
+                        //"/user/add","/user/load/*")//配置地址放行
+                        "/**")
+                .permitAll()
+                .anyRequest().
+                authenticated();    //其他地址需要认证授权
     }
 
 

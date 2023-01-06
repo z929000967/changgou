@@ -1,5 +1,8 @@
 package com.changgou.seckill.controller;
+import com.changgou.seckill.dao.SeckillGoodsMapper;
+import com.changgou.seckill.dao.SeckillOrderMapper;
 import com.changgou.seckill.pojo.SeckillGoods;
+import com.changgou.seckill.pojo.SeckillOrder;
 import com.changgou.seckill.service.SeckillGoodsService;
 import com.github.pagehelper.PageInfo;
 import entity.DateUtil;
@@ -9,8 +12,12 @@ import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
+import tk.mybatis.mapper.entity.Example;
 
 
 
@@ -21,6 +28,12 @@ public class SeckillGoodsController {
 
     @Autowired
     private SeckillGoodsService seckillGoodsService;
+
+    @Autowired
+    private SeckillGoodsMapper seckillGoodsMapper;
+
+    @Autowired
+    private SeckillOrderMapper seckillOrderMapper;
 
     /***
      * 查询秒杀商品时间菜单
@@ -118,6 +131,10 @@ public class SeckillGoodsController {
     public Result<SeckillGoods> findById(@PathVariable Long id){
         //调用SeckillGoodsService实现根据主键查询SeckillGoods
         SeckillGoods seckillGoods = seckillGoodsService.findById(id);
+        Date date = seckillGoods.getStartTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = sdf.format(date);
+        System.out.println(formattedDate);
         return new Result<SeckillGoods>(true,StatusCode.OK,"查询成功",seckillGoods);
     }
 
@@ -150,4 +167,43 @@ public class SeckillGoodsController {
         SeckillGoods seckillGoods = seckillGoodsService.one(time, id);
         return new Result<SeckillGoods>(true,StatusCode.OK,"秒杀商品详情查询成功",seckillGoods);
     }
+
+    // @GetMapping(value = "/test")
+    // public void two(){
+    //     SeckillGoods seckillGoods3 = seckillGoodsMapper.selectByPrimaryKey("1131814837488324608");
+    //     List<Date> dateMenus = DateUtil.getDateMenus();
+    //
+    //     //循环查询每个时间区间的秒杀商品
+    //     for (Date startTime : dateMenus) {
+    //         Example example = new Example(SeckillGoods.class);
+    //         Example.Criteria criteria = example.createCriteria();
+    //         // //2.1   商品必须审核通过
+    //         criteria.andEqualTo("status","1");
+    //
+    //         //2.2   库存>0
+    //         criteria.andGreaterThan("stockCount",0);
+    //
+    //         // //2.3   秒杀开始时间>=当前循环的时间区间的开始时间
+    //         // criteria.andGreaterThanOrEqualTo("startTime",startTime);
+    //         //
+    //         // //2.3   秒杀结束时间<当前循环的时间区间的开始时间+2小时
+    //         // criteria.andLessThan("endTime",DateUtil.addDateHour(startTime,2));
+    //
+    //
+    //
+    //         //2.4 执行查询
+    //         List<SeckillGoods> seckillGoods =seckillGoodsMapper.selectByExample(example);
+    //         SeckillGoods seckillGoods2 = seckillGoodsMapper.selectByPrimaryKey("1131814837488324608");
+    //         SeckillGoods seckillGoods5 = seckillGoodsMapper.selectByPrimaryKey("1131814837488324608");
+    //         SeckillOrder seckillOrder = seckillOrderMapper.selectByPrimaryKey("1164127202799915008");
+    //         for (SeckillGoods seckillGoods1: seckillGoods) {
+    //             if (seckillGoods1.getId()==1131814840889905152L){
+    //                 System.out.println(seckillGoods1);
+    //             }
+    //             System.out.println(seckillGoods1.getId());
+    //         }
+    //
+    //         // return new Result<List<SeckillGoods>>(true,StatusCode.OK,"秒杀商品详情查询成功",seckillGoods);
+    //     }
+    // }
 }

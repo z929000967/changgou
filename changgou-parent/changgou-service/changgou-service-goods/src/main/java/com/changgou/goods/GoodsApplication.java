@@ -8,14 +8,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import tk.mybatis.spring.annotation.MapperScan;
 
-/**
- * 描述
- *
- * @author 三国的包子
- * @version 1.0
- * @package com.changgou *
- * @since 1.0
- */
+
 @SpringBootApplication
 
 @EnableEurekaClient

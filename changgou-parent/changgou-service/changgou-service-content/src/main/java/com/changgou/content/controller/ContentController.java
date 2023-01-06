@@ -127,6 +127,6 @@ public class ContentController {
     @GetMapping(value = "/list/category/{id}")
     public Result<List<Content>> findByCategory(@PathVariable(name="id") Long id){
        List<Content>  contents = contentService.findByCategory(id);
-       return new Result<>(true,StatusCode.OK,"chengg ",contents);
+       return new Result<>(true,StatusCode.OK,"广告查询成功 ",contents);
     }
 }

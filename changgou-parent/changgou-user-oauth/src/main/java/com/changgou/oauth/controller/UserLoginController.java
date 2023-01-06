@@ -54,6 +54,7 @@ public class UserLoginController {
 
         //设置到cookie中
         saveCookie(authToken.getAccessToken());
+
         return new Result<>(true, StatusCode.OK,"令牌生成成功",authToken);
     }
 

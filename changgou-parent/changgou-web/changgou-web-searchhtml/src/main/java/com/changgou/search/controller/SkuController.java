@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/search")
+@RequestMapping(value = "/searchweb")
 public class SkuController {
 
     @Autowired
@@ -57,8 +57,8 @@ public class SkuController {
      * @return
      */
     public String[] url(Map<String,String> searchMap){
-        String url = "/search/list";    //初始化地址
-        String sorturl = "/search/list";//排序地址
+        String url = "/api/searchweb/list";    //初始化地址
+        String sorturl = "/api/searchweb/list";//排序地址
         if(searchMap!=null && searchMap.size()>0){
             url+="?";
             sorturl+="?";

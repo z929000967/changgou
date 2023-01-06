@@ -5,6 +5,7 @@ import com.changgou.user.pojo.User;
 import com.changgou.user.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import entity.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -181,6 +182,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void add(User user){
+        String passWord = user.getPassword();
+        user.setPassword(BCrypt.hashpw(passWord, BCrypt.gensalt()));
         userMapper.insert(user);
     }
 

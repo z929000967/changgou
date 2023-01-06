@@ -171,18 +171,24 @@
 		data:{
 			username:'',
 			password:'',
-			fromx:[[${from}]]
+			from:[[${from}]],
 		},
 		methods:{
 			login:function () {
 				axios.post('/user/login?username='+this.username+'&password='+this.password).then(
 						function (response) {
+							// // 获取当前 URL
+							// const url = new URL(window.location.href)
+							// // 获取 "id" 参数的值
+							// this.id = url.searchParams.get('id')
 							if(response.data.flag){//登录成功
 								//跳转到之前的页面
-								//alert("成功");
-								window.location.href=app.fromx;
+								//alert("成功")
+								window.location.href=app.from;
+
+
 							}else{
-								response.data.message;
+								app.msg= response.data.message;
 							}
 						}
 				)

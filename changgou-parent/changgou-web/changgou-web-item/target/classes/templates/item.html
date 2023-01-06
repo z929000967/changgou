@@ -6,18 +6,18 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 	<title>畅购</title>
-	 <link rel="icon" href="/img/favicon.ico">
+	 <link rel="icon" href="/api/img/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="/css/all.css" />
-    <link rel="stylesheet" type="text/css" href="/css/pages-item.css" />
-    <link rel="stylesheet" type="text/css" href=" /css/pages-zoom.css" />
+    <link rel="stylesheet" type="text/css" href="/api/api/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="/api/css/pages-item.css" />
+    <link rel="stylesheet" type="text/css" href="/api/css/pages-zoom.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 </head>
 
 <body>
-
+<div id="itemArray">
 
 <!--页面顶部-->
 <div id="nav-bottom">
@@ -41,7 +41,7 @@
 							<li class="f-item"><span>关注畅购</span></li>
 							<li class="f-item"><span><a href="cooperation.html" target="_blank">合作招商</a></span></li>
 							<li class="f-item"><span><a href="shoplogin.html" target="_blank">商家后台</a></span></li>
-							<li class="f-item"><span>网站导航</li>
+							<li class="f-item"><span>网站导航</span></li>
 						</ul>
 					</div>
 
@@ -504,9 +504,9 @@
 					</div>
 				</div>
 
-				<div class="fr itemInfo-wrap"id="itemArray">
+				<div class="fr itemInfo-wrap">
 					<div class="sku-name">
-						<h4 >{{sku.name}}</h4>
+						<h4>{{sku.name}}</h4>
 					</div>
 					<div class="news"><span th:text="${spu.caption}"></span></div>
 					<div class="summary">
@@ -625,7 +625,7 @@
 								<li>
 									<div class="list-wrap">
 										<div class="p-img">
-											<img src=" /img/_/part01.png" />
+											<img src=" /api/img/_/part01.png" />
 										</div>
 										<div class="attr">
 											<em>Apple苹果iPhone 6s (A1699)</em>
@@ -644,7 +644,7 @@
 								<li>
 									<div class="list-wrap">
 										<div class="p-img">
-											<img src=" /img/_/part02.png" />
+											<img src=" /api/img/_/part02.png" />
 										</div>
 										<div class="attr">
 											<em>Apple苹果iPhone 6s (A1699)</em>
@@ -663,7 +663,7 @@
 								<li>
 									<div class="list-wrap">
 										<div class="p-img">
-											<img src=" /img/_/part03.png" />
+											<img src=" /api/img/_/part03.png" />
 										</div>
 										<div class="attr">
 											<em>Apple苹果iPhone 6s (A1699)</em>
@@ -680,7 +680,7 @@
 									</div>
 									<div class="list-wrap">
 										<div class="p-img">
-											<img src=" /img/_/part02.png" />
+											<img src=" /api/img/_/part02.png" />
 										</div>
 										<div class="attr">
 											<em>Apple苹果iPhone 6s (A1699)</em>
@@ -697,7 +697,7 @@
 									</div>
 									<div class="list-wrap">
 										<div class="p-img">
-											<img src=" /img/_/part03.png" />
+											<img src=" /api/img/_/part03.png" />
 										</div>
 										<div class="attr">
 											<em>Apple苹果iPhone 6s (A1699)</em>
@@ -727,7 +727,7 @@
 							<div class="fl master">
 								<div class="list-wrap">
 									<div class="p-img">
-										<img src=" /img/_/l-m01.png" />
+										<img src=" /api/img/_/l-m01.png" />
 									</div>
 									<em>￥5299</em>
 									<i>+</i>
@@ -737,7 +737,7 @@
 								<ul class="suit-list">
 									<li class="">
 										<div id="">
-											<img src=" /img/_/dp01.png" />
+											<img src=" /api/img/_/dp01.png" />
 										</div>
 										<i>Feless费勒斯VR</i>
 										<label data-toggle="checkbox" class="checkbox-pretty">
@@ -745,21 +745,21 @@
 										</label>
 									</li>
 									<li class="">
-										<div id=""><img src=" /img/_/dp02.png" /> </div>
+										<div id=""><img src=" /api/img/_/dp02.png" /> </div>
 										<i>Feless费勒斯VR</i>
 										<label data-toggle="checkbox" class="checkbox-pretty">
 											<input type="checkbox"><span>50</span>
 										</label>
 									</li>
 									<li class="">
-										<div id=""><img src=" /img/_/dp03.png" /></div>
+										<div id=""><img src=" /api/img/_/dp03.png" /></div>
 										<i>Feless费勒斯VR</i>
 											<label data-toggle="checkbox" class="checkbox-pretty">
 											<input type="checkbox"><span>59</span>
 										</label>
 									</li>
 									<li class="">
-										<div id=""><img src=" /img/_/dp04.png" /></div>
+										<div id=""><img src=" /api/img/_/dp04.png" /></div>
 										<i>Feless费勒斯VR</i>
 										<label data-toggle="checkbox" class="checkbox-pretty">
 											<input type="checkbox"><span>99</span>
@@ -832,7 +832,7 @@
 										<div class="content">
 											<div class="com-item">
 												<div class="user-column">
-													<div class="username"><img src=" /img/_/photo.jpg"/>用户****1</div>
+													<div class="username"><img src=" /api/img/_/photo.jpg"/>用户****1</div>
 													<div class="usernum">品享值258698</div>
 												</div>
 												<div class="user-info">
@@ -854,7 +854,7 @@
 											</div>
 											<div class="com-item">
 												<div class="user-column">
-													<div class="username"><img src=" /img/_/photo.jpg"/>用户****1</div>
+													<div class="username"><img src=" /api/img/_/photo.jpg"/>用户****1</div>
 													<div class="usernum">品享值258698</div>
 												</div>
 												<div class="user-info">
@@ -876,7 +876,7 @@
 											</div>
 											<div class="com-item">
 												<div class="user-column">
-													<div class="username"><img src=" /img/_/photo.jpg"/>用户****1</div>
+													<div class="username"><img src=" /api/img/_/photo.jpg"/>用户****1</div>
 													<div class="usernum">品享值258698</div>
 												</div>
 												<div class="user-info">
@@ -898,7 +898,7 @@
 											</div>
 											<div class="com-item">
 												<div class="user-column">
-													<div class="username"><img src=" /img/_/photo.jpg"/>用户****1</div>
+													<div class="username"><img src=" /api/img/_/photo.jpg"/>用户****1</div>
 													<div class="usernum">品享值258698</div>
 												</div>
 												<div class="user-info">
@@ -920,7 +920,7 @@
 											</div>
 											<div class="com-item">
 												<div class="user-column">
-													<div class="username"><img src=" /img/_/photo.jpg"/>用户****1</div>
+													<div class="username"><img src=" /api/img/_/photo.jpg"/>用户****1</div>
 													<div class="usernum">品享值258698</div>
 												</div>
 												<div class="user-info">
@@ -960,7 +960,7 @@
 						<li class="yui3-u-1-6">
 							<div class="list-wrap">
 								<div class="p-img">
-									<img src=" /img/_/itemlike01.png" />
+									<img src=" /api/img/_/itemlike01.png" />
 								</div>
 								<div class="attr">
 									<em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
@@ -979,7 +979,7 @@
 						<li class="yui3-u-1-6">
 							<div class="list-wrap">
 								<div class="p-img">
-									<img src=" /img/_/itemlike02.png" />
+									<img src=" /api/img/_/itemlike02.png" />
 								</div>
 								<div class="attr">
 									<em>Apple苹果iPhone 6s/6s Plus 16G 64G 128G</em>
@@ -998,7 +998,7 @@
 						<li class="yui3-u-1-6">
 							<div class="list-wrap">
 								<div class="p-img">
-									<img src=" /img/_/itemlike03.png" />
+									<img src=" /api/img/_/itemlike03.png" />
 								</div>
 								<div class="attr">
 									<em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
@@ -1017,7 +1017,7 @@
 						<li class="yui3-u-1-6">
 							<div class="list-wrap">
 								<div class="p-img">
-									<img src=" /img/_/itemlike04.png" />
+									<img src=" /api/img/_/itemlike04.png" />
 								</div>
 								<div class="attr">
 									<em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
@@ -1036,7 +1036,7 @@
 						<li class="yui3-u-1-6">
 							<div class="list-wrap">
 								<div class="p-img">
-									<img src=" /img/_/itemlike05.png" />
+									<img src=" /api/img/_/itemlike05.png" />
 								</div>
 								<div class="attr">
 									<em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
@@ -1055,7 +1055,7 @@
 						<li class="yui3-u-1-6">
 							<div class="list-wrap">
 								<div class="p-img">
-									<img src=" /img/_/itemlike06.png" />
+									<img src=" /api/img/_/itemlike06.png" />
 								</div>
 								<div class="attr">
 									<em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
@@ -1185,7 +1185,7 @@
 					</div>
 					<div class="yui3-u-1-6">
 						<h4>帮助中心</h4>
-						<img src="/img/wx_cz.jpg">
+						<img src="/api/img/wx_cz.jpg">
 					</div>
 				</div>
 			</div>
@@ -1273,12 +1273,12 @@
 							<div class="jt-history-wrap">
 								<ul>
 									<!--<li class="jth-item">
-										<a href="#" class="img-wrap"> <img src="../../.../portal/img/like_03.png" height="100" width="100" /> </a>
+										<a href="#" class="img-wrap"> <img src="../../.../portal/api/img/like_03.png" height="100" width="100" /> </a>
 										<a class="add-cart-button" href="#" target="_blank">加入购物车</a>
 										<a href="#" target="_blank" class="price">￥498.00</a>
 									</li>
 									<li class="jth-item">
-										<a href="#" class="img-wrap"> <img src="../../../portal/img/like_02.png" height="100" width="100" /></a>
+										<a href="#" class="img-wrap"> <img src="../../../portal/api/img/like_02.png" height="100" width="100" /></a>
 										<a class="add-cart-button" href="#" target="_blank">加入购物车</a>
 										<a href="#" target="_blank" class="price">￥498.00</a>
 									</li>-->
@@ -1328,6 +1328,15 @@
 
 	</div>
 </div>
+</div>
+<script type="text/javascript" src="/api/js/plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/api/js/plugins/sui/sui.min.js"></script>
+<script type="text/javascript" src="/api/js/plugins/jquery.jqzoom/jquery.jqzoom.js"></script>
+<script type="text/javascript" src="/api/js/plugins/jquery.jqzoom/zoom.js"></script>
+<script type="text/javascript" src="/api/js/plugins/updateimg.js"></script>
+<!-- 引入组件库 -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.5.4/index.js"></script><script src="/api/js/axios.js"></script>
     <script th:inline="javascript">
         var item = new Vue({
             el: '#itemArray',

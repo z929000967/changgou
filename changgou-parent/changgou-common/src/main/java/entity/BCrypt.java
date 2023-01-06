@@ -789,4 +789,15 @@ public class BCrypt {
 		}
 		return ret == 0;
 	}
+	public static void main(String[] args) {
+		String myPassword="szitheima";
+		String cryPassWord = BCrypt.hashpw(myPassword, BCrypt.gensalt());
+		System.out.println(cryPassWord);
+		if(BCrypt.checkpw(myPassword,"$2a$10$FpSl6n6x7pl/AKu0LEcZDOlrg1Nt7sKtpgXKYUOSfPZFXV3.j4mJq")){
+			System.out.println("好耶");
+		}
+	}
+
 }
+
+

@@ -22,7 +22,7 @@ public class SeckillStatus implements Serializable {
     private Float money;
 
     //订单号
-    private Long orderId;
+    private String orderId;
     //时间段
     private String time;
 

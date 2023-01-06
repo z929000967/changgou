@@ -1,5 +1,7 @@
 package com.changgou.order.pojo;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(name="tb_order")
+@Data
 public class Order implements Serializable{
 
 	@Id
@@ -18,16 +21,16 @@ public class Order implements Serializable{
 	private Integer totalNum;//数量合计
 
     @Column(name = "total_money")
-	private Integer totalMoney;//金额合计
+	private Float totalMoney;//金额合计
 
     @Column(name = "pre_money")
-	private Integer preMoney;//优惠金额
+	private Float preMoney;//优惠金额
 
     @Column(name = "post_fee")
-	private Integer postFee;//邮费
+	private Float postFee;//邮费
 
     @Column(name = "pay_money")
-	private Integer payMoney;//实付金额
+	private Float payMoney;//实付金额
 
     @Column(name = "pay_type")
 	private String payType;//支付类型，1、在线支付、0 货到付款
@@ -103,249 +106,8 @@ public class Order implements Serializable{
 		this.skuIds = skuIds;
 	}
 
-	//get方法
-	public String getId() {
-		return id;
-	}
 
-	//set方法
-	public void setId(String id) {
-		this.id = id;
-	}
-	//get方法
-	public Integer getTotalNum() {
-		return totalNum;
-	}
 
-	//set方法
-	public void setTotalNum(Integer totalNum) {
-		this.totalNum = totalNum;
-	}
-	//get方法
-	public Integer getTotalMoney() {
-		return totalMoney;
-	}
-
-	//set方法
-	public void setTotalMoney(Integer totalMoney) {
-		this.totalMoney = totalMoney;
-	}
-	//get方法
-	public Integer getPreMoney() {
-		return preMoney;
-	}
-
-	//set方法
-	public void setPreMoney(Integer preMoney) {
-		this.preMoney = preMoney;
-	}
-	//get方法
-	public Integer getPostFee() {
-		return postFee;
-	}
-
-	//set方法
-	public void setPostFee(Integer postFee) {
-		this.postFee = postFee;
-	}
-	//get方法
-	public Integer getPayMoney() {
-		return payMoney;
-	}
-
-	//set方法
-	public void setPayMoney(Integer payMoney) {
-		this.payMoney = payMoney;
-	}
-	//get方法
-	public String getPayType() {
-		return payType;
-	}
-
-	//set方法
-	public void setPayType(String payType) {
-		this.payType = payType;
-	}
-	//get方法
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	//set方法
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-	//get方法
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	//set方法
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-	//get方法
-	public Date getPayTime() {
-		return payTime;
-	}
-
-	//set方法
-	public void setPayTime(Date payTime) {
-		this.payTime = payTime;
-	}
-	//get方法
-	public Date getConsignTime() {
-		return consignTime;
-	}
-
-	//set方法
-	public void setConsignTime(Date consignTime) {
-		this.consignTime = consignTime;
-	}
-	//get方法
-	public Date getEndTime() {
-		return endTime;
-	}
-
-	//set方法
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-	//get方法
-	public Date getCloseTime() {
-		return closeTime;
-	}
-
-	//set方法
-	public void setCloseTime(Date closeTime) {
-		this.closeTime = closeTime;
-	}
-	//get方法
-	public String getShippingName() {
-		return shippingName;
-	}
-
-	//set方法
-	public void setShippingName(String shippingName) {
-		this.shippingName = shippingName;
-	}
-	//get方法
-	public String getShippingCode() {
-		return shippingCode;
-	}
-
-	//set方法
-	public void setShippingCode(String shippingCode) {
-		this.shippingCode = shippingCode;
-	}
-	//get方法
-	public String getUsername() {
-		return username;
-	}
-
-	//set方法
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	//get方法
-	public String getBuyerMessage() {
-		return buyerMessage;
-	}
-
-	//set方法
-	public void setBuyerMessage(String buyerMessage) {
-		this.buyerMessage = buyerMessage;
-	}
-	//get方法
-	public String getBuyerRate() {
-		return buyerRate;
-	}
-
-	//set方法
-	public void setBuyerRate(String buyerRate) {
-		this.buyerRate = buyerRate;
-	}
-	//get方法
-	public String getReceiverContact() {
-		return receiverContact;
-	}
-
-	//set方法
-	public void setReceiverContact(String receiverContact) {
-		this.receiverContact = receiverContact;
-	}
-	//get方法
-	public String getReceiverMobile() {
-		return receiverMobile;
-	}
-
-	//set方法
-	public void setReceiverMobile(String receiverMobile) {
-		this.receiverMobile = receiverMobile;
-	}
-	//get方法
-	public String getReceiverAddress() {
-		return receiverAddress;
-	}
-
-	//set方法
-	public void setReceiverAddress(String receiverAddress) {
-		this.receiverAddress = receiverAddress;
-	}
-	//get方法
-	public String getSourceType() {
-		return sourceType;
-	}
-
-	//set方法
-	public void setSourceType(String sourceType) {
-		this.sourceType = sourceType;
-	}
-	//get方法
-	public String getTransactionId() {
-		return transactionId;
-	}
-
-	//set方法
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
-	}
-	//get方法
-	public String getOrderStatus() {
-		return orderStatus;
-	}
-
-	//set方法
-	public void setOrderStatus(String orderStatus) {
-		this.orderStatus = orderStatus;
-	}
-	//get方法
-	public String getPayStatus() {
-		return payStatus;
-	}
-
-	//set方法
-	public void setPayStatus(String payStatus) {
-		this.payStatus = payStatus;
-	}
-	//get方法
-	public String getConsignStatus() {
-		return consignStatus;
-	}
-
-	//set方法
-	public void setConsignStatus(String consignStatus) {
-		this.consignStatus = consignStatus;
-	}
-	//get方法
-	public String getIsDelete() {
-		return isDelete;
-	}
-
-	//set方法
-	public void setIsDelete(String isDelete) {
-		this.isDelete = isDelete;
-	}
 
 
 }
